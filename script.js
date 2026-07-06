@@ -162,7 +162,7 @@ const books = [
     price: 100,
     category: "dev",
     popular: true,
-    cover: "image livre/pere riche pere pauvre.jpg"
+    cover: "livre pdf/imagejava.jpg"
   },
   {
     title: "L’art subtil de s’ en foutre",
@@ -170,7 +170,7 @@ const books = [
     price: 70,
     category: "dev",
     popular: true,
-    cover: "image livre/art de s'enfoutre.jpg"
+    cover: "livre pdf/imagejava.jpg"
   },
   {
     title: "Programmer avec javascript pour les nuls",
@@ -178,7 +178,7 @@ const books = [
     price: 70,
     category: "tech",
     popular: true,
-    cover: "image livre/imagejava.jpg"
+    cover: "livre pdf/imagejava.jpg"
   },
    {
     title: "introduction de deeplearning",
@@ -186,7 +186,7 @@ const books = [
     price: 80,
     category: "tech",
     popular: true,
-    cover: "image livre/introduction de deeplearning.jpg"
+    cover: "livre pdf/imagejava.jpg"
   },
     {
     title: "Développement système sous Linux Ordonnancement multitâche",
@@ -202,7 +202,7 @@ const books = [
     price: 70,
     category: "tech",
     popular: true,
-    cover: "image livre/Sécurité informatique - Ethical Hacking - Apprendre l'attaque pour mieux se défendre (French Edition).jpg"
+    cover: "livre pdf/imagejava.jpg"
   },
    {
     title: "intro a wordpress",
