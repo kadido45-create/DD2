@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="fr" dir="ltr">
+<head>
+  <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-01J131RCQ5"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-01J131RCQ5');
+</script>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Librairie Digitale — Ebooks numériques & livres physiques</title>
+<meta name="description" content="Librairie Digitale : des milliers de livres numériques et physiques — développement personnel, business, technologie, Pulaar et arabe. Livraison instantanée ou à domicile.">
+<link rel="icon" href="image livre/livre-ouvert.png" type="image/png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800&family=Inter:wght@400;500;600;700&family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- ===== HEADER ===== -->
+  <header class="site-header">
+    <div class="header-inner container">
+      <div class="logo">
+        <svg class="logo-icon" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="2" y="4" width="5" height="5" fill="#2B6BE4"/>
+          <rect x="9" y="9" width="4" height="4" fill="#5B9BFF"/>
+          <rect x="3" y="14" width="3" height="3" fill="#2B6BE4" opacity="0.6"/>
+          <rect x="13" y="3" width="3" height="3" fill="#5B9BFF" opacity="0.7"/>
+          <path d="M8 13c5-2.5 9-2.5 12 0v26c-3-2.5-7-2.5-12 0V13z" fill="#B9C7DC"/>
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M22 8h9c8 0 13 6.5 13 16S39 40 31 40h-9V8zm7 7v18h2c4.5 0 7-3.5 7-9s-2.5-9-7-9h-2z" fill="#2B6BE4"/>
+        </svg>
+        <span class="logo-text">Librairie <strong>Digitale</strong></span>
+      </div>
+
+      <div class="search-wrap">
+        <svg class="search-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2"/>
+          <path d="M21 21l-4.3-4.3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+        <input type="text" id="searchInput" placeholder="Rechercher un livre, un thème...">
+      </div>
+
+      <!-- Bouton de changement de langue FR / AR -->
+      <button id="langToggle" class="lang-btn" aria-label="Changer de langue / تغيير اللغة">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.6"/>
+          <path d="M3 12h18M12 3c2.5 2.6 3.8 5.7 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.7-3.8-9s1.3-6.4 3.8-9z" stroke="currentColor" stroke-width="1.6"/>
+        </svg>
+        <span id="langToggleText">العربية</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- ===== NAVIGATION PRINCIPALE ===== -->
+  <nav class="main-nav" aria-label="Navigation principale">
+    <div class="container nav-inner">
+      <a href="#" class="nav-home" aria-label="Accueil">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M3 11l9-8 9 8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M5 10v10h5v-6h4v6h5V10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </a>
+      <a href="#collection" class="catalogue-btn">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M4 5c2.5-1.2 5-1.2 8 0v14c-3-1.2-5.5-1.2-8 0V5z" fill="currentColor" opacity="0.85"/>
+          <path d="M20 5c-2.5-1.2-5-1.2-8 0v14c3-1.2 5.5-1.2 8 0V5z" fill="currentColor" opacity="0.55"/>
+        </svg>
+        <span data-i18n="navCatalogue">Voir le catalogue</span>
+      </a>
+      <button id="navToggle" class="nav-toggle" aria-label="Menu" aria-expanded="false">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M4 6h16M4 12h16M4 18h16" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+        </svg>
+      </button>
+      <div class="nav-links" id="navLinks">
+        <a href="#populaires" class="nav-link" data-i18n="navTop">Top ventes</a>
+        <a href="#gratuits" class="nav-link" data-i18n="navFree">Livres gratuits</a>
+        <a href="#pulaar" class="nav-link" data-i18n="navPulaarLink">Pulaar</a>
+        <a href="#arabe" class="nav-link" data-i18n="navArabeLink">Arabe</a>
+        <a href="#contact" class="nav-link" data-i18n="navContact">Contact</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ===== HERO ===== -->
+  <section class="hero">
+    <div class="container hero-inner">
+      <p class="hero-eyebrow" data-i18n="heroEyebrow">Nouvelle étagère chaque semaine</p>
+      <h1 data-i18n-html="heroTitle">Des livres qui changent<br> votre façon de penser.</h1>
+      <p class="hero-sub" data-i18n="heroSub">Développement personnel, business, technologie, Pulaar et livres en arabe — en version numérique livrée instantanément, ou en version physique livrée chez vous.</p>
+      <a href="#collection" class="hero-cta" data-i18n="heroCta">Découvrir le catalogue</a>
+    </div>
+  </section>
+
+  <!-- ===== BANDE DE CONFIANCE ===== -->
+  <section class="trust">
+    <div class="container trust-inner">
+      <div class="trust-item">
+        <span class="trust-icon">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 3v12m0 0l-4.5-4.5M12 15l4.5-4.5M4 18v2a1 1 0 001 1h14a1 1 0 001-1v-2" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </span>
+        <h3 data-i18n="trust1Title">Téléchargement immédiat</h3>
+        <p data-i18n="trust1Desc">Vos ebooks livrés en quelques secondes</p>
+      </div>
+      <div class="trust-item">
+        <span class="trust-icon">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6l7-3z" stroke="white" stroke-width="2" stroke-linejoin="round"/>
+            <path d="M9 12l2 2 4-4" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </span>
+        <h3 data-i18n="trust2Title">Paiement sécurisé</h3>
+        <p data-i18n="trust2Desc">Une expérience d'achat fiable via WhatsApp</p>
+      </div>
+      <div class="trust-item">
+        <span class="trust-icon">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="2" y="5" width="14" height="10" rx="1.5" stroke="white" stroke-width="2"/>
+            <path d="M6 19h6" stroke="white" stroke-width="2" stroke-linecap="round"/>
+            <rect x="17" y="8" width="5" height="11" rx="1.5" stroke="white" stroke-width="2"/>
+          </svg>
+        </span>
+        <h3 data-i18n="trust3Title">Compatible tous appareils</h3>
+        <p data-i18n="trust3Desc">Lisez où que vous soyez, sur mobile ou PC</p>
+      </div>
+      <div class="trust-item">
+        <span class="trust-icon">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M4 14a8 8 0 0116 0" stroke="white" stroke-width="2" stroke-linecap="round"/>
+            <rect x="3" y="14" width="4" height="6" rx="1.5" stroke="white" stroke-width="2"/>
+            <rect x="17" y="14" width="4" height="6" rx="1.5" stroke="white" stroke-width="2"/>
+          </svg>
+        </span>
+        <h3 data-i18n="trust4Title">Support réactif</h3>
+        <p data-i18n="trust4Desc">Nous sommes là pour vous aider 7j/7</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CATEGORIES ===== -->
+  <nav class="categories container" id="categoryNav" aria-label="Filtrer par catégorie">
+    <button class="cat-btn active" data-category="all" data-i18n="navAll">Tous les livres</button>
+    <button class="cat-btn" data-category="dev" data-i18n="catDev">Développement personnel</button>
+    <button class="cat-btn" data-category="business" data-i18n="catBusiness">Business</button>
+    <button class="cat-btn" data-category="tech" data-i18n="catTech">Technologie</button>
+    <button class="cat-btn" data-category="pulaar" data-i18n="catPulaar">Pulaar</button>
+    <button class="cat-btn" data-category="arabe" data-i18n="catArabe">Arabe</button>
+  </nav>
+
+  <!-- ===== TOUTE LA COLLECTION (en premier) ===== -->
+  <section class="section container" id="collection">
+    <div class="section-head">
+      <h2>Toute la collection</h2>
+      <span class="section-count" id="resultsCount"></span>
+    </div>
+    <div class="book-grid" id="bookGrid"></div>
+    <p class="no-results" id="noResults" data-i18n="noResults" hidden>Aucun livre ne correspond à votre recherche.</p>
+  </section>
+
+  <!-- ===== LIVRES POPULAIRES ===== -->
+  <section class="section container" id="populaires">
+    <div class="section-head">
+      <h2>Livres populaires</h2>
+      <span class="section-tag">🔥 Les plus vendus</span>
+    </div>
+    <div class="book-grid" id="popularGrid"></div>
+  </section>
+
+  <!-- ===== LIVRES GRATUITS ===== -->
+  <section class="section container" id="gratuits">
+    <div class="section-head">
+      <h2>Livres gratuits</h2>
+      <span class="section-tag">🎁 Téléchargement en un clic</span>
+    </div>
+    <div class="book-grid" id="freeGrid"></div>
+  </section>
+
+  <!-- ===== LIVRES EN PULAAR ===== -->
+  <section class="section container" id="pulaar">
+    <div class="section-head">
+      <h2>Livres en Pulaar</h2>
+      <span class="section-tag">📖 Culture & langue Pulaar</span>
+    </div>
+    <div class="book-grid" id="pulaarGrid"></div>
+  </section>
+
+  <!-- ===== LIVRES EN ARABE ===== -->
+  <section class="section container" id="arabe">
+    <div class="section-head">
+      <h2>Livres en Arabe</h2>
+      <span class="section-tag">📚 Littérature & savoir en arabe</span>
+    </div>
+    <div class="book-grid" id="arabicGrid"></div>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="site-footer" id="contact">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <div class="logo footer-logo">
+            <svg class="logo-icon" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="2" y="4" width="5" height="5" fill="#5B9BFF"/>
+              <rect x="9" y="9" width="4" height="4" fill="#5B9BFF" opacity="0.8"/>
+              <rect x="3" y="14" width="3" height="3" fill="#5B9BFF" opacity="0.6"/>
+              <rect x="13" y="3" width="3" height="3" fill="#5B9BFF" opacity="0.7"/>
+              <path d="M8 13c5-2.5 9-2.5 12 0v26c-3-2.5-7-2.5-12 0V13z" fill="#DCE6F5"/>
+              <path fill-rule="evenodd" clip-rule="evenodd" d="M22 8h9c8 0 13 6.5 13 16S39 40 31 40h-9V8zm7 7v18h2c4.5 0 7-3.5 7-9s-2.5-9-7-9h-2z" fill="#5B9BFF"/>
+            </svg>
+            <span class="logo-text">Librairie <strong>Digitale</strong></span>
+          </div>
+          <p class="footer-desc" data-i18n="footerAboutDesc">Des milliers de livres numériques et physiques entre vos mains, à tout moment, où que vous soyez.</p>
+          <div class="social-row">
+            <a href="#" class="social-btn" aria-label="Facebook">
+              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M13.5 10H16l-.4 3h-2.1v8.5h-3.1V13H8.5v-3h1.9V8.2c0-2.3 1.4-3.7 3.7-3.7.8 0 1.7.1 1.9.1v2.5h-1.3c-1 0-1.2.5-1.2 1.2V10z"/></svg>
+            </a>
+            <a href="#" class="social-btn" aria-label="Instagram">
+              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect x="3.5" y="3.5" width="17" height="17" rx="4.5" stroke="currentColor" stroke-width="2"/>
+                <circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="2"/>
+                <circle cx="17.2" cy="6.8" r="1.3" fill="currentColor"/>
+              </svg>
+            </a>
+            <a href="#" class="social-btn" aria-label="X (Twitter)">
+              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M4 4l7.4 9.4L4.5 20h2.6l5.5-5.2L16.9 20h4.1l-7.7-9.9L20.3 4h-2.6l-4.9 4.7L9.1 4H4z"/></svg>
+            </a>
+          </div>
+        </div>
+
+        <div class="footer-col">
+          <h4 data-i18n="footerLinksTitle">Liens rapides</h4>
+          <ul class="footer-links">
+            <li><a href="#collection" data-i18n="navCatalogue">Voir le catalogue</a></li>
+            <li><a href="#populaires" data-i18n="navTop">Top ventes</a></li>
+            <li><a href="#gratuits" data-i18n="navFree">Livres gratuits</a></li>
+            <li><a href="#pulaar" data-i18n="navPulaarLink">Pulaar</a></li>
+            <li><a href="#arabe" data-i18n="navArabeLink">Arabe</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4 data-i18n="footerContactTitle">Contact</h4>
+          <ul class="footer-links">
+            <li><a id="footerWhatsapp" href="#" target="_blank" rel="noopener" data-i18n="footerWhatsappLabel">WhatsApp</a></li>
+            <li><a href="mailto:hamadiboly@gmail.com">hamadiboly@gmail.com</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p data-i18n="footerLine">Paiement sécurisé via WhatsApp • Numérique livré instantanément • Physique livré à domicile</p>
+        <p class="footer-copy" data-i18n="footerCopy">© 2026 Librairie Digitale. Tous droits réservés.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ===== BOUTON WHATSAPP FLOTTANT ===== -->
+  <a id="whatsappFloat" href="https://wa.me/TONNUMERO?text=Bonjour%2C%20j%27ai%20une%20question%20sur%20vos%20livres."
+     class="whatsapp-float" target="_blank" rel="noopener" aria-label="Contacter sur WhatsApp">
+    <svg viewBox="0 0 32 32" fill="white" xmlns="http://www.w3.org/2000/svg">
+      <path d="M16 3C9.4 3 4 8.4 4 15c0 2.3.6 4.4 1.7 6.3L4 29l7.9-1.6c1.8.9 3.9 1.4 6.1 1.4 6.6 0 12-5.4 12-12S22.6 3 16 3zm0 21.8c-1.9 0-3.7-.5-5.3-1.4l-.4-.2-4.7 1 1-4.6-.2-.4C5.5 17.5 5 16.3 5 15c0-6.1 5-11 11-11s11 4.9 11 11-4.9 11-11 11z"/>
+      <path d="M22 18.3c-.3-.2-2-1-2.3-1.1-.3-.1-.5-.2-.7.2-.2.3-.8 1.1-1 1.3-.2.2-.4.2-.7.1-.3-.2-1.4-.5-2.6-1.6-1-.9-1.6-2-1.8-2.3-.2-.3 0-.5.1-.6.1-.1.3-.4.5-.5.1-.2.2-.3.3-.5.1-.2 0-.4 0-.5-.1-.2-.7-1.7-1-2.3-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.4s1 2.8 1.2 3c.1.2 2 3 4.8 4.3.7.3 1.2.5 1.6.6.7.2 1.3.2 1.8.1.6-.1 1.7-.7 1.9-1.3.2-.6.2-1.1.2-1.3-.1-.1-.3-.2-.6-.3z"/>
+    </svg>
+  </a>
+
+  <script src="script.js"></script>
+</body>
+</html>
