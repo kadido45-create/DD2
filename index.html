@@ -1,275 +1,344 @@
 <!DOCTYPE html>
-<html lang="fr" dir="ltr">
+<html lang="fr">
 <head>
-  <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-01J131RCQ5"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-01J131RCQ5');
-</script>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Librairie Digitale — Ebooks numériques & livres physiques</title>
-<meta name="description" content="Librairie Digitale : des milliers de livres numériques et physiques — développement personnel, business, technologie, Pulaar et arabe. Livraison instantanée ou à domicile.">
-<link rel="icon" href="image livre/livre-ouvert.png" type="image/png">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800&family=Inter:wght@400;500;600;700&family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css">
+<title>Préparation QCM — Concours Greffier (CNC Mauritanie)</title>
+<style>
+  :root{
+    --bg:#0f1720; --card:#17222e; --card2:#1e2d3d; --line:#2a3b4d;
+    --txt:#e6edf3; --muted:#93a4b3; --accent:#2f81f7; --accent2:#1f6feb;
+    --ok:#2ea043; --okbg:#132a1a; --bad:#e5534b; --badbg:#2a1514;
+    --warn:#d29922; --chip:#213043;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--txt);line-height:1.5}
+  header{background:linear-gradient(135deg,#12212f,#0c1620);border-bottom:1px solid var(--line);padding:22px 20px}
+  .wrap{max-width:900px;margin:0 auto;padding:0 16px}
+  h1{margin:0;font-size:20px}
+  .sub{color:var(--muted);font-size:13px;margin-top:4px}
+  .disclaimer{background:#2a230f;border:1px solid #5c4a12;color:#f0d98a;font-size:12.5px;padding:10px 14px;border-radius:8px;margin-top:14px}
+  .panel{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px;margin:18px 0}
+  .row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+  .chip{background:var(--chip);border:1px solid var(--line);color:var(--txt);padding:7px 12px;border-radius:20px;font-size:13px;cursor:pointer;user-select:none;transition:.15s}
+  .chip.active{background:var(--accent2);border-color:var(--accent);color:#fff}
+  .chip small{opacity:.7}
+  label.opt{display:flex;gap:10px;align-items:flex-start;background:var(--card2);border:1px solid var(--line);border-radius:9px;padding:11px 13px;margin:8px 0;cursor:pointer;transition:.12s}
+  label.opt:hover{border-color:var(--accent)}
+  label.opt.correct{background:var(--okbg);border-color:var(--ok)}
+  label.opt.wrong{background:var(--badbg);border-color:var(--bad)}
+  label.opt input{margin-top:3px}
+  button{background:var(--accent2);color:#fff;border:none;border-radius:8px;padding:10px 18px;font-size:14px;cursor:pointer;font-weight:600}
+  button:hover{background:var(--accent)}
+  button.ghost{background:transparent;border:1px solid var(--line);color:var(--txt);font-weight:500}
+  button.ghost:hover{border-color:var(--accent)}
+  button:disabled{opacity:.4;cursor:not-allowed}
+  .qhead{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:6px}
+  .tag{font-size:11px;padding:3px 9px;border-radius:20px;background:var(--chip);border:1px solid var(--line);color:var(--muted)}
+  .tag.multi{color:#f0d98a;border-color:#5c4a12;background:#2a230f}
+  .qtext{font-size:15.5px;margin:6px 0 10px;font-weight:500}
+  .explain{margin-top:12px;padding:12px 14px;border-radius:9px;background:#10202c;border-left:3px solid var(--accent);font-size:14px;display:none}
+  .explain.show{display:block}
+  .explain b{color:#7fb2ff}
+  .progress{height:8px;background:var(--card2);border-radius:6px;overflow:hidden;margin:14px 0}
+  .progress>div{height:100%;background:linear-gradient(90deg,var(--accent),#4cc38a);width:0;transition:.3s}
+  .stat{font-size:13px;color:var(--muted)}
+  .big{font-size:34px;font-weight:700}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .scorecard{text-align:center;padding:16px;background:var(--card2);border-radius:10px;border:1px solid var(--line)}
+  .timer{font-variant-numeric:tabular-nums;font-weight:700;font-size:15px;color:#f0d98a}
+  .hidden{display:none!important}
+  a.reset{color:var(--muted);font-size:12px}
+  .footer{color:var(--muted);font-size:12px;text-align:center;padding:24px}
+  @media(max-width:560px){.grid{grid-template-columns:1fr}}
+</style>
 </head>
 <body>
+<header>
+  <div class="wrap">
+    <h1>Préparation QCM — Concours de Greffier</h1>
+    <div class="sub">Commission Nationale des Concours (Mauritanie) · Épreuve en spécialité · 80 questions</div>
+    <div class="disclaimer">⚠️ Outil d'entraînement pédagogique. Les questions s'appuient sur les principes généraux de l'organisation judiciaire et de la procédure. <b>Vérifie toujours les valeurs exactes (délais, articles, compétences) avec les textes officiels mauritaniens</b> : Code de procédure civile, commerciale et administrative ; Code de procédure pénale ; loi sur l'organisation judiciaire ; statut des greffes.</div>
+  </div>
+</header>
 
-  <!-- ===== HEADER ===== -->
-  <header class="site-header">
-    <div class="header-inner container">
-      <div class="logo">
-        <svg class="logo-icon" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <rect x="2" y="4" width="5" height="5" fill="#2B6BE4"/>
-          <rect x="9" y="9" width="4" height="4" fill="#5B9BFF"/>
-          <rect x="3" y="14" width="3" height="3" fill="#2B6BE4" opacity="0.6"/>
-          <rect x="13" y="3" width="3" height="3" fill="#5B9BFF" opacity="0.7"/>
-          <path d="M8 13c5-2.5 9-2.5 12 0v26c-3-2.5-7-2.5-12 0V13z" fill="#B9C7DC"/>
-          <path fill-rule="evenodd" clip-rule="evenodd" d="M22 8h9c8 0 13 6.5 13 16S39 40 31 40h-9V8zm7 7v18h2c4.5 0 7-3.5 7-9s-2.5-9-7-9h-2z" fill="#2B6BE4"/>
-        </svg>
-        <span class="logo-text">Librairie <strong>Digitale</strong></span>
-      </div>
+<div class="wrap">
 
-      <div class="search-wrap">
-        <svg class="search-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2"/>
-          <path d="M21 21l-4.3-4.3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-        </svg>
-        <input type="text" id="searchInput" placeholder="Rechercher un livre, un thème...">
-      </div>
-
-      <!-- Bouton de changement de langue FR / AR -->
-      <button id="langToggle" class="lang-btn" aria-label="Changer de langue / تغيير اللغة">
-        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.6"/>
-          <path d="M3 12h18M12 3c2.5 2.6 3.8 5.7 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.7-3.8-9s1.3-6.4 3.8-9z" stroke="currentColor" stroke-width="1.6"/>
-        </svg>
-        <span id="langToggleText">العربية</span>
-      </button>
+  <!-- ACCUEIL -->
+  <div class="panel" id="home">
+    <div class="row" style="justify-content:space-between">
+      <div><b>1. Choisis les domaines</b><div class="stat">Clique pour activer / désactiver</div></div>
     </div>
-  </header>
+    <div class="row" id="domainChips" style="margin-top:12px"></div>
 
-  <!-- ===== NAVIGATION PRINCIPALE ===== -->
-  <nav class="main-nav" aria-label="Navigation principale">
-    <div class="container nav-inner">
-      <a href="#" class="nav-home" aria-label="Accueil">
-        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M3 11l9-8 9 8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-          <path d="M5 10v10h5v-6h4v6h5V10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-      </a>
-      <a href="#collection" class="catalogue-btn">
-        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M4 5c2.5-1.2 5-1.2 8 0v14c-3-1.2-5.5-1.2-8 0V5z" fill="currentColor" opacity="0.85"/>
-          <path d="M20 5c-2.5-1.2-5-1.2-8 0v14c3-1.2 5.5-1.2 8 0V5z" fill="currentColor" opacity="0.55"/>
-        </svg>
-        <span data-i18n="navCatalogue">Voir le catalogue</span>
-      </a>
-      <button id="navToggle" class="nav-toggle" aria-label="Menu" aria-expanded="false">
-        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M4 6h16M4 12h16M4 18h16" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
-        </svg>
-      </button>
-      <div class="nav-links" id="navLinks">
-        <a href="#populaires" class="nav-link" data-i18n="navTop">Top ventes</a>
-        <a href="#gratuits" class="nav-link" data-i18n="navFree">Livres gratuits</a>
-        <a href="#pulaar" class="nav-link" data-i18n="navPulaarLink">Pulaar</a>
-        <a href="#arabe" class="nav-link" data-i18n="navArabeLink">Arabe</a>
-        <a href="#contact" class="nav-link" data-i18n="navContact">Contact</a>
-      </div>
+    <div style="margin-top:18px"><b>2. Choisis le mode</b></div>
+    <div class="row" style="margin-top:10px">
+      <label class="chip active" id="modeTrain"><input type="radio" name="mode" checked hidden>📖 Entraînement <small>(correction immédiate)</small></label>
+      <label class="chip" id="modeExam"><input type="radio" name="mode" hidden>⏱️ Examen blanc <small>(correction à la fin, chrono 2h)</small></label>
     </div>
-  </nav>
 
-  <!-- ===== HERO ===== -->
-  <section class="hero">
-    <div class="container hero-inner">
-      <p class="hero-eyebrow" data-i18n="heroEyebrow">Nouvelle étagère chaque semaine</p>
-      <h1 data-i18n-html="heroTitle">Des livres qui changent<br> votre façon de penser.</h1>
-      <p class="hero-sub" data-i18n="heroSub">Développement personnel, business, technologie, Pulaar et livres en arabe — en version numérique livrée instantanément, ou en version physique livrée chez vous.</p>
-      <a href="#collection" class="hero-cta" data-i18n="heroCta">Découvrir le catalogue</a>
+    <div class="row" style="margin-top:10px">
+      <label class="chip active" id="shuffleChip">🔀 Mélanger l'ordre</label>
+      <span class="stat" id="countInfo"></span>
     </div>
-  </section>
 
-  <!-- ===== BANDE DE CONFIANCE ===== -->
-  <section class="trust">
-    <div class="container trust-inner">
-      <div class="trust-item">
-        <span class="trust-icon">
-          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M12 3v12m0 0l-4.5-4.5M12 15l4.5-4.5M4 18v2a1 1 0 001 1h14a1 1 0 001-1v-2" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </span>
-        <h3 data-i18n="trust1Title">Téléchargement immédiat</h3>
-        <p data-i18n="trust1Desc">Vos ebooks livrés en quelques secondes</p>
-      </div>
-      <div class="trust-item">
-        <span class="trust-icon">
-          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6l7-3z" stroke="white" stroke-width="2" stroke-linejoin="round"/>
-            <path d="M9 12l2 2 4-4" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </span>
-        <h3 data-i18n="trust2Title">Paiement sécurisé</h3>
-        <p data-i18n="trust2Desc">Une expérience d'achat fiable via WhatsApp</p>
-      </div>
-      <div class="trust-item">
-        <span class="trust-icon">
-          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <rect x="2" y="5" width="14" height="10" rx="1.5" stroke="white" stroke-width="2"/>
-            <path d="M6 19h6" stroke="white" stroke-width="2" stroke-linecap="round"/>
-            <rect x="17" y="8" width="5" height="11" rx="1.5" stroke="white" stroke-width="2"/>
-          </svg>
-        </span>
-        <h3 data-i18n="trust3Title">Compatible tous appareils</h3>
-        <p data-i18n="trust3Desc">Lisez où que vous soyez, sur mobile ou PC</p>
-      </div>
-      <div class="trust-item">
-        <span class="trust-icon">
-          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M4 14a8 8 0 0116 0" stroke="white" stroke-width="2" stroke-linecap="round"/>
-            <rect x="3" y="14" width="4" height="6" rx="1.5" stroke="white" stroke-width="2"/>
-            <rect x="17" y="14" width="4" height="6" rx="1.5" stroke="white" stroke-width="2"/>
-          </svg>
-        </span>
-        <h3 data-i18n="trust4Title">Support réactif</h3>
-        <p data-i18n="trust4Desc">Nous sommes là pour vous aider 7j/7</p>
-      </div>
+    <div style="margin-top:18px">
+      <button id="startBtn">Démarrer ▶</button>
     </div>
-  </section>
+  </div>
 
-  <!-- ===== CATEGORIES ===== -->
-  <nav class="categories container" id="categoryNav" aria-label="Filtrer par catégorie">
-    <button class="cat-btn active" data-category="all" data-i18n="navAll">Tous les livres</button>
-    <button class="cat-btn" data-category="dev" data-i18n="catDev">Développement personnel</button>
-    <button class="cat-btn" data-category="business" data-i18n="catBusiness">Business</button>
-    <button class="cat-btn" data-category="tech" data-i18n="catTech">Technologie</button>
-    <button class="cat-btn" data-category="pulaar" data-i18n="catPulaar">Pulaar</button>
-    <button class="cat-btn" data-category="arabe" data-i18n="catArabe">Arabe</button>
-  </nav>
-
-  <!-- ===== TOUTE LA COLLECTION (en premier) ===== -->
-  <section class="section container" id="collection">
-    <div class="section-head">
-      <h2>Toute la collection</h2>
-      <span class="section-count" id="resultsCount"></span>
+  <!-- QUIZ -->
+  <div class="panel hidden" id="quiz">
+    <div class="qhead">
+      <span class="stat" id="pos"></span>
+      <span class="timer hidden" id="timer">02:00:00</span>
+      <a class="reset" href="#" id="quitBtn">✕ Quitter</a>
     </div>
-    <div class="book-grid" id="bookGrid"></div>
-    <p class="no-results" id="noResults" data-i18n="noResults" hidden>Aucun livre ne correspond à votre recherche.</p>
-  </section>
-
-  <!-- ===== LIVRES POPULAIRES ===== -->
-  <section class="section container" id="populaires">
-    <div class="section-head">
-      <h2>Livres populaires</h2>
-      <span class="section-tag">🔥 Les plus vendus</span>
+    <div class="progress"><div id="bar"></div></div>
+    <div id="qbox"></div>
+    <div class="explain" id="explain"></div>
+    <div class="row" style="justify-content:space-between;margin-top:16px">
+      <button class="ghost" id="prevBtn">◀ Précédent</button>
+      <button id="validBtn">Valider</button>
+      <button id="nextBtn">Suivant ▶</button>
     </div>
-    <div class="book-grid" id="popularGrid"></div>
-  </section>
+  </div>
 
-  <!-- ===== LIVRES GRATUITS ===== -->
-  <section class="section container" id="gratuits">
-    <div class="section-head">
-      <h2>Livres gratuits</h2>
-      <span class="section-tag">🎁 Téléchargement en un clic</span>
+  <!-- RESULTATS -->
+  <div class="panel hidden" id="results">
+    <h2 style="margin-top:0">Résultats</h2>
+    <div class="grid">
+      <div class="scorecard"><div class="big" id="scorePct">0%</div><div class="stat">Score global</div></div>
+      <div class="scorecard"><div class="big" id="scoreRaw">0/0</div><div class="stat">Bonnes réponses</div></div>
     </div>
-    <div class="book-grid" id="freeGrid"></div>
-  </section>
-
-  <!-- ===== LIVRES EN PULAAR ===== -->
-  <section class="section container" id="pulaar">
-    <div class="section-head">
-      <h2>Livres en Pulaar</h2>
-      <span class="section-tag">📖 Culture & langue Pulaar</span>
+    <div id="domainBreakdown" style="margin-top:14px"></div>
+    <div class="row" style="margin-top:16px">
+      <button id="reviewBtn">Revoir mes réponses</button>
+      <button class="ghost" id="againBtn">Recommencer</button>
     </div>
-    <div class="book-grid" id="pulaarGrid"></div>
-  </section>
+  </div>
 
-  <!-- ===== LIVRES EN ARABE ===== -->
-  <section class="section container" id="arabe">
-    <div class="section-head">
-      <h2>Livres en Arabe</h2>
-      <span class="section-tag">📚 Littérature & savoir en arabe</span>
-    </div>
-    <div class="book-grid" id="arabicGrid"></div>
-  </section>
+</div>
 
-  <!-- ===== FOOTER ===== -->
-  <footer class="site-footer" id="contact">
-    <div class="container">
-      <div class="footer-grid">
-        <div class="footer-col">
-          <div class="logo footer-logo">
-            <svg class="logo-icon" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <rect x="2" y="4" width="5" height="5" fill="#5B9BFF"/>
-              <rect x="9" y="9" width="4" height="4" fill="#5B9BFF" opacity="0.8"/>
-              <rect x="3" y="14" width="3" height="3" fill="#5B9BFF" opacity="0.6"/>
-              <rect x="13" y="3" width="3" height="3" fill="#5B9BFF" opacity="0.7"/>
-              <path d="M8 13c5-2.5 9-2.5 12 0v26c-3-2.5-7-2.5-12 0V13z" fill="#DCE6F5"/>
-              <path fill-rule="evenodd" clip-rule="evenodd" d="M22 8h9c8 0 13 6.5 13 16S39 40 31 40h-9V8zm7 7v18h2c4.5 0 7-3.5 7-9s-2.5-9-7-9h-2z" fill="#5B9BFF"/>
-            </svg>
-            <span class="logo-text">Librairie <strong>Digitale</strong></span>
-          </div>
-          <p class="footer-desc" data-i18n="footerAboutDesc">Des milliers de livres numériques et physiques entre vos mains, à tout moment, où que vous soyez.</p>
-          <div class="social-row">
-            <a href="#" class="social-btn" aria-label="Facebook">
-              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M13.5 10H16l-.4 3h-2.1v8.5h-3.1V13H8.5v-3h1.9V8.2c0-2.3 1.4-3.7 3.7-3.7.8 0 1.7.1 1.9.1v2.5h-1.3c-1 0-1.2.5-1.2 1.2V10z"/></svg>
-            </a>
-            <a href="#" class="social-btn" aria-label="Instagram">
-              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <rect x="3.5" y="3.5" width="17" height="17" rx="4.5" stroke="currentColor" stroke-width="2"/>
-                <circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="2"/>
-                <circle cx="17.2" cy="6.8" r="1.3" fill="currentColor"/>
-              </svg>
-            </a>
-            <a href="#" class="social-btn" aria-label="X (Twitter)">
-              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M4 4l7.4 9.4L4.5 20h2.6l5.5-5.2L16.9 20h4.1l-7.7-9.9L20.3 4h-2.6l-4.9 4.7L9.1 4H4z"/></svg>
-            </a>
-          </div>
-        </div>
+<div class="footer">Généré pour la préparation au concours de greffier · CNC Mauritanie · Fichier autonome, fonctionne hors ligne.</div>
 
-        <div class="footer-col">
-          <h4 data-i18n="footerLinksTitle">Liens rapides</h4>
-          <ul class="footer-links">
-            <li><a href="#collection" data-i18n="navCatalogue">Voir le catalogue</a></li>
-            <li><a href="#populaires" data-i18n="navTop">Top ventes</a></li>
-            <li><a href="#gratuits" data-i18n="navFree">Livres gratuits</a></li>
-            <li><a href="#pulaar" data-i18n="navPulaarLink">Pulaar</a></li>
-            <li><a href="#arabe" data-i18n="navArabeLink">Arabe</a></li>
-          </ul>
-        </div>
+<script>
+/* ================= DONNÉES ================= */
+const QUESTIONS = [
+// ===== DOMAINE 1 : ORGANISATION JUDICIAIRE =====
+{n:1,dom:"Organisation judiciaire",q:"La juridiction placée au sommet de l'ordre judiciaire, compétente pour connaître des pourvois en cassation, est :",opts:["Le Conseil constitutionnel.","La Cour suprême.","La Cour d'appel de Nouakchott.","Aucune des réponses proposées.","La Haute Cour de justice."],correct:[1],exp:"La Cour suprême est la plus haute juridiction de l'ordre judiciaire ; elle juge les pourvois en cassation contre les décisions rendues en dernier ressort. Le Conseil constitutionnel n'appartient pas à l'ordre judiciaire ordinaire."},
+{n:2,dom:"Organisation judiciaire",q:"Un justiciable conteste un jugement rendu en premier ressort. Devant quelle juridiction porte-t-il, en principe, son appel ?",opts:["La Cour suprême.","La Cour d'appel.","Le même tribunal autrement composé.","Aucune des réponses proposées."],correct:[1],exp:"L'appel, voie de recours ordinaire, est porté devant la Cour d'appel qui réexamine l'affaire en fait et en droit. La Cour suprême ne connaît que du pourvoi en cassation (droit)."},
+{n:3,dom:"Organisation judiciaire",q:"Le principe du « double degré de juridiction » signifie :",opts:["Qu'une affaire est jugée par deux magistrats.","Qu'une affaire peut être examinée successivement par deux juridictions de niveaux différents.","Que le procès comporte deux audiences.","Aucune des réponses proposées."],correct:[1],exp:"Le double degré permet de faire réexaminer l'affaire par une juridiction supérieure (appel), garantissant un contrôle de la première décision."},
+{n:4,dom:"Organisation judiciaire",q:"Parmi les principes fondamentaux de la justice, lesquels sont exacts ?",opts:["La publicité des audiences.","La gratuité de la justice dans son principe.","Le secret des délibérations.","La vénalité des charges de magistrat.","L'indépendance du juge.","Aucune des réponses proposées."],correct:[0,1,2,4],exp:"Audiences publiques, délibérations secrètes, juge indépendant et justice gratuite dans son principe (les magistrats ne sont pas payés par les parties). La vénalité des charges est prohibée."},
+{n:5,dom:"Organisation judiciaire",q:"La juridiction de première instance connaissant, au niveau départemental (moughataa), des affaires de moindre importance est :",opts:["La Cour d'appel.","Le tribunal de moughataa.","Le tribunal de wilaya.","Aucune des réponses proposées."],correct:[1],exp:"Le tribunal de moughataa (échelon départemental) connaît en première instance des petites affaires civiles et des contraventions, au plus près du justiciable."},
+{n:6,dom:"Organisation judiciaire",q:"Les magistrats qui requièrent l'application de la loi au nom de la société et représentent le ministère public forment :",opts:["La magistrature du siège.","Le parquet (magistrature debout).","Le greffe.","Aucune des réponses proposées."],correct:[1],exp:"Le parquet, ou magistrature « debout », requiert l'application de la loi (procureur, substituts). Les magistrats du siège (« assis ») tranchent les litiges."},
+{n:7,dom:"Organisation judiciaire",q:"« Les juges du siège sont inamovibles. » Cette règle vise principalement à garantir :",opts:["Leur avancement automatique.","Leur indépendance vis-à-vis du pouvoir exécutif.","La gratuité de la justice.","Aucune des réponses proposées."],correct:[1],exp:"L'inamovibilité protège le juge du siège contre les mutations ou révocations arbitraires : c'est une condition essentielle de son indépendance."},
+{n:8,dom:"Organisation judiciaire",q:"Quelles juridictions relèvent de l'ordre judiciaire ?",opts:["Le tribunal de wilaya.","Le Conseil constitutionnel.","La Cour d'appel.","La Cour suprême.","Aucune des réponses proposées."],correct:[0,2,3],exp:"Tribunal de wilaya, Cour d'appel et Cour suprême relèvent de l'ordre judiciaire. Le Conseil constitutionnel est une juridiction distincte, chargée du contrôle de constitutionnalité."},
+{n:9,dom:"Organisation judiciaire",q:"La juridiction compétente pour juger les crimes (infractions les plus graves) est généralement :",opts:["Le tribunal de moughataa.","La cour criminelle.","Le tribunal de commerce.","Aucune des réponses proposées."],correct:[1],exp:"Les crimes relèvent de la cour criminelle ; les délits du tribunal correctionnel ; les contraventions du tribunal de police / moughataa."},
+{n:10,dom:"Organisation judiciaire",q:"La compétence « ratione materiae » d'une juridiction désigne :",opts:["Sa compétence selon le lieu.","Sa compétence selon la nature de l'affaire.","Sa compétence selon l'âge des parties.","Aucune des réponses proposées."],correct:[1],exp:"La compétence d'attribution (ratione materiae) dépend de la nature du litige ; la compétence territoriale (ratione loci) dépend du lieu."},
+{n:11,dom:"Organisation judiciaire",q:"La compétence territoriale d'un tribunal est dite compétence :",opts:["Ratione materiae.","Ratione loci.","Ratione temporis.","Aucune des réponses proposées."],correct:[1],exp:"Ratione loci = compétence territoriale, selon le ressort géographique de la juridiction."},
+{n:12,dom:"Organisation judiciaire",q:"Le Conseil supérieur de la magistrature intervient notamment pour :",opts:["La discipline des magistrats.","La nomination et la carrière des magistrats.","Le vote des lois.","La garantie de l'indépendance de la justice.","Aucune des réponses proposées."],correct:[0,1,3],exp:"Le Conseil supérieur de la magistrature veille à l'indépendance de la justice et intervient dans la carrière et la discipline des magistrats. Le vote des lois relève du Parlement."},
+{n:13,dom:"Organisation judiciaire",q:"Un différend entre commerçants né d'un acte de commerce relève, là où elle existe, de :",opts:["La juridiction commerciale.","La cour criminelle.","Le tribunal du travail.","Aucune des réponses proposées."],correct:[0],exp:"Les litiges entre commerçants nés d'actes de commerce relèvent des juridictions commerciales (ou de la formation commerciale du tribunal)."},
+{n:14,dom:"Organisation judiciaire",q:"Le « ressort » d'une juridiction désigne :",opts:["Le nombre de juges qui la composent.","L'étendue géographique dans laquelle elle exerce sa compétence.","La durée du mandat des juges.","Aucune des réponses proposées."],correct:[1],exp:"Le ressort est la zone territoriale sur laquelle s'exerce la compétence d'une juridiction."},
+{n:15,dom:"Organisation judiciaire",q:"Parmi les auxiliaires de justice, on compte notamment :",opts:["L'avocat.","Le greffier.","L'huissier de justice.","Le député.","Aucune des réponses proposées."],correct:[0,1,2],exp:"Avocats, greffiers et huissiers sont des auxiliaires de justice concourant au fonctionnement du service public de la justice. Le député appartient au pouvoir législatif."},
+{n:16,dom:"Organisation judiciaire",q:"Une décision rendue « en dernier ressort » est une décision :",opts:["Qui peut encore être frappée d'appel.","Qui n'est pas susceptible d'appel (mais éventuellement de cassation).","Qui est définitive et sans aucun recours.","Aucune des réponses proposées."],correct:[1],exp:"« En dernier ressort » = non susceptible d'appel ; un pourvoi en cassation reste possible. « En premier ressort » = susceptible d'appel."},
+{n:17,dom:"Organisation judiciaire",q:"La collégialité d'une juridiction signifie :",opts:["Qu'elle statue à juge unique.","Qu'elle est composée de plusieurs juges délibérant ensemble.","Qu'elle siège toujours en public.","Aucune des réponses proposées."],correct:[1],exp:"Une formation collégiale réunit plusieurs magistrats qui délibèrent et décident ensemble, par opposition au juge unique."},
+{n:18,dom:"Organisation judiciaire",q:"L'exécution des décisions de justice et la signification des actes sont assurées principalement par :",opts:["Le greffier en chef.","L'huissier de justice.","Le procureur uniquement.","Aucune des réponses proposées."],correct:[1],exp:"L'huissier de justice signifie les actes et exécute les décisions, au besoin avec le concours de la force publique."},
+{n:19,dom:"Organisation judiciaire",q:"La distinction entre magistrature du siège et magistrature du parquet exprime :",opts:["Une distinction de fonctions au sein de l'autorité judiciaire.","Deux ordres de juridiction distincts.","Une hiérarchie entre le greffe et les juges.","Aucune des réponses proposées."],correct:[0],exp:"Siège et parquet sont deux fonctions distinctes de la même autorité judiciaire : juger d'une part, requérir d'autre part."},
+{n:20,dom:"Organisation judiciaire",q:"La publicité des débats connaît des exceptions : le huis clos peut être ordonné notamment :",opts:["Pour protéger l'ordre public ou les bonnes mœurs.","Dans certaines affaires touchant à la vie privée ou aux mineurs.","Pour accélérer systématiquement toutes les audiences.","Aucune des réponses proposées."],correct:[0,1],exp:"Le huis clos, exception à la publicité, protège l'ordre public, les bonnes mœurs, la vie privée ou les mineurs. Il ne se justifie pas par un simple objectif de rapidité."},
 
-        <div class="footer-col">
-          <h4 data-i18n="footerContactTitle">Contact</h4>
-          <ul class="footer-links">
-            <li><a id="footerWhatsapp" href="#" target="_blank" rel="noopener" data-i18n="footerWhatsappLabel">WhatsApp</a></li>
-            <li><a href="mailto:hamadiboly@gmail.com">hamadiboly@gmail.com</a></li>
-          </ul>
-        </div>
-      </div>
+// ===== DOMAINE 2 : RÔLE & ACTES DU GREFFIER =====
+{n:21,dom:"Rôle & actes du greffier",q:"Le greffier est essentiellement :",opts:["Un magistrat du siège.","Un auxiliaire de justice, officier public assistant la juridiction.","Un avocat de la défense.","Aucune des réponses proposées."],correct:[1],exp:"Le greffier est un fonctionnaire/auxiliaire de justice, garant de l'authenticité des actes de procédure et assistant du juge ; il n'est pas magistrat et ne juge pas."},
+{n:22,dom:"Rôle & actes du greffier",q:"Parmi les missions du greffier à l'audience figurent :",opts:["Rendre le jugement à la place du juge.","Assister le juge et garantir l'authenticité de l'audience.","Tenir les notes d'audience (le plumitif).","Consigner les déclarations et incidents.","Aucune des réponses proposées."],correct:[1,2,3],exp:"À l'audience, le greffier assiste le magistrat, tient le plumitif et consigne les incidents. Il ne juge pas : la décision appartient au seul magistrat."},
+{n:23,dom:"Rôle & actes du greffier",q:"L'authenticité d'un jugement suppose la signature :",opts:["Du seul greffier.","Du seul président.","Du président (ou juge) et du greffier.","Aucune des réponses proposées."],correct:[2],exp:"La minute du jugement est signée par le magistrat qui a présidé et par le greffier ; cette double signature confère l'authenticité à l'acte."},
+{n:24,dom:"Rôle & actes du greffier",q:"L'original d'un jugement, conservé au greffe, s'appelle :",opts:["La grosse.","La minute.","L'expédition.","Aucune des réponses proposées."],correct:[1],exp:"La minute est l'original conservé au greffe ; l'expédition en est une copie conforme ; la grosse est l'expédition revêtue de la formule exécutoire."},
+{n:25,dom:"Rôle & actes du greffier",q:"La copie d'un jugement revêtue de la formule exécutoire, permettant l'exécution forcée, se nomme :",opts:["La minute.","L'expédition simple.","La grosse.","Aucune des réponses proposées."],correct:[2],exp:"La grosse est la copie exécutoire, délivrée par le greffe, qui permet au créancier de faire procéder à l'exécution forcée."},
+{n:26,dom:"Rôle & actes du greffier",q:"Le greffe a la garde et la tenue notamment :",opts:["Des registres et des minutes.","Des scellés et pièces à conviction confiés au greffe.","Du budget de l'État.","Des dossiers de procédure.","Aucune des réponses proposées."],correct:[0,1,3],exp:"Le greffe conserve registres, minutes, dossiers et, le cas échéant, scellés et pièces à conviction. Il n'a pas la gestion du budget de l'État."},
+{n:27,dom:"Rôle & actes du greffier",q:"La délivrance d'une expédition (copie conforme) d'un jugement à une partie relève :",opts:["De l'avocat.","Du greffe.","De l'huissier.","Aucune des réponses proposées."],correct:[1],exp:"C'est le greffe qui délivre les copies (expéditions) et grosses des décisions qu'il conserve."},
+{n:28,dom:"Rôle & actes du greffier",q:"Le registre sur lequel sont inscrites, dans l'ordre, les affaires portées devant la juridiction est :",opts:["Le rôle.","Le casier judiciaire.","Le répertoire des actes notariés.","Aucune des réponses proposées."],correct:[0],exp:"Le rôle est le registre où sont enrôlées et numérotées les affaires ; « mettre au rôle » c'est enregistrer l'affaire pour qu'elle soit jugée."},
+{n:29,dom:"Rôle & actes du greffier",q:"« Enrôler une affaire » signifie :",opts:["La classer sans suite.","L'inscrire au rôle de la juridiction pour qu'elle soit appelée.","La renvoyer à une autre juridiction.","Aucune des réponses proposées."],correct:[1],exp:"Enrôler = inscrire l'affaire au rôle (après paiement éventuel des droits), condition pour qu'elle soit audiencée."},
+{n:30,dom:"Rôle & actes du greffier",q:"Le greffe peut être chargé de la perception :",opts:["Des droits et taxes de justice.","Des amendes et frais dans les conditions prévues par la loi.","Des impôts fonciers des citoyens.","Aucune des réponses proposées."],correct:[0,1],exp:"Le greffe encaisse, dans le cadre légal, certains droits de justice, consignations, amendes et frais. Le recouvrement des impôts relève de l'administration fiscale."},
+{n:31,dom:"Rôle & actes du greffier",q:"Le « plumitif » (ou feuille d'audience) est :",opts:["Le jugement définitif.","Le document où le greffier note le déroulement et les décisions prises à l'audience.","La convocation adressée au témoin.","Aucune des réponses proposées."],correct:[1],exp:"Le plumitif est la note d'audience tenue par le greffier : mémoire du déroulement des débats et des décisions annoncées."},
+{n:32,dom:"Rôle & actes du greffier",q:"Pour conférer date certaine et valeur probante à un acte, le greffier :",opts:["Y appose sa seule initiale.","Le date, le signe et, le cas échéant, le scelle.","Y inscrit un simple numéro de téléphone.","Aucune des réponses proposées."],correct:[1],exp:"Le greffier date, signe et scelle les actes qu'il authentifie, leur conférant date certaine et force probante."},
+{n:33,dom:"Rôle & actes du greffier",q:"En matière de conservation, le greffe assure notamment :",opts:["L'archivage des dossiers et minutes.","La tenue à jour des registres.","La destruction libre de toute pièce à sa convenance.","La délivrance de copies et extraits.","Aucune des réponses proposées."],correct:[0,1,3],exp:"Le greffe archive, tient les registres et délivre copies et extraits. La conservation et la destruction des archives obéissent à des règles strictes, sans libre appréciation du greffier."},
+{n:34,dom:"Rôle & actes du greffier",q:"Le greffier en chef exerce principalement :",opts:["Une fonction juridictionnelle de jugement.","La direction et l'organisation des services du greffe.","La défense des parties.","Aucune des réponses proposées."],correct:[1],exp:"Le greffier en chef dirige le greffe, encadre les personnels et organise les services ; il n'exerce pas de fonction de jugement."},
+{n:35,dom:"Rôle & actes du greffier",q:"La certification « copie conforme à l'original » d'un acte judiciaire relève de la compétence :",opts:["Du greffier, pour les actes qu'il détient.","Du témoin.","Du prévenu.","Aucune des réponses proposées."],correct:[0],exp:"Le greffier, dépositaire des minutes, certifie conformes les copies qu'il délivre à partir des originaux qu'il conserve."},
+{n:36,dom:"Rôle & actes du greffier",q:"Le greffier concourt à la communication de certaines décisions. Cela peut inclure :",opts:["L'avis donné aux parties de la date d'audience.","La notification de décisions dans les cas prévus par la loi.","Le prononcé personnel de la peine.","Aucune des réponses proposées."],correct:[0,1],exp:"Le greffe informe les parties (avis, convocations) et notifie certaines décisions selon les textes. Le prononcé de la peine appartient au juge."},
+{n:37,dom:"Rôle & actes du greffier",q:"Le respect du secret professionnel s'impose au greffier :",opts:["Uniquement pendant l'audience publique.","Pour les informations connues dans l'exercice de ses fonctions.","Jamais, car tout est public.","Aucune des réponses proposées."],correct:[1],exp:"Le greffier est tenu au secret professionnel pour les informations confidentielles connues dans ses fonctions, y compris le secret des délibérations."},
+{n:38,dom:"Rôle & actes du greffier",q:"En cas d'absence du greffier à une audience où sa présence est légalement requise, l'acte accompli est en principe :",opts:["Parfaitement valable.","Entaché d'irrégularité, la présence du greffier étant une garantie d'authenticité.","Sans aucune conséquence.","Aucune des réponses proposées."],correct:[1],exp:"La présence du greffier, quand elle est requise, garantit l'authenticité ; son absence peut vicier l'acte ou la procédure."},
+{n:39,dom:"Rôle & actes du greffier",q:"Le dossier de procédure tenu par le greffe contient généralement :",opts:["Les actes introductifs d'instance.","Les pièces produites par les parties.","Les jugements et procès-verbaux.","La déclaration d'impôts du juge.","Aucune des réponses proposées."],correct:[0,1,2],exp:"Le dossier réunit actes introductifs, pièces des parties, procès-verbaux et décisions : la mémoire écrite de l'affaire."},
+{n:40,dom:"Rôle & actes du greffier",q:"Dans l'exercice de ses fonctions, le greffier doit rester :",opts:["Partial en faveur du demandeur.","Impartial et neutre envers toutes les parties.","Au service exclusif de la défense.","Aucune des réponses proposées."],correct:[1],exp:"Comme auxiliaire de justice, le greffier est tenu à la neutralité et à l'impartialité envers toutes les parties."},
 
-      <div class="footer-bottom">
-        <p data-i18n="footerLine">Paiement sécurisé via WhatsApp • Numérique livré instantanément • Physique livré à domicile</p>
-        <p class="footer-copy" data-i18n="footerCopy">© 2026 Librairie Digitale. Tous droits réservés.</p>
-      </div>
-    </div>
-  </footer>
+// ===== DOMAINE 3 : PROCÉDURE CIVILE =====
+{n:41,dom:"Procédure civile",q:"L'acte par lequel le demandeur cite son adversaire à comparaître devant le juge civil est :",opts:["La plainte.","L'assignation (ou citation).","Le réquisitoire.","Aucune des réponses proposées."],correct:[1],exp:"En matière civile, l'instance est introduite par une assignation (ou citation/requête). La plainte et le réquisitoire relèvent du pénal."},
+{n:42,dom:"Procédure civile",q:"La personne qui prend l'initiative du procès civil est appelée :",opts:["Le défendeur.","Le demandeur.","Le prévenu.","Aucune des réponses proposées."],correct:[1],exp:"Le demandeur introduit l'action ; le défendeur est celui contre qui l'action est dirigée. « Prévenu » est un terme pénal."},
+{n:43,dom:"Procédure civile",q:"Le principe du contradictoire implique :",opts:["Que chaque partie puisse discuter les prétentions et pièces de l'autre.","Que nul ne soit jugé sans avoir été mis en mesure de se défendre.","Que le juge statue en secret sans informer les parties.","La communication des pièces entre parties.","Aucune des réponses proposées."],correct:[0,1,3],exp:"Le contradictoire garantit que chaque partie connaît et peut discuter les arguments et pièces adverses ; la communication des pièces en est un corollaire."},
+{n:44,dom:"Procédure civile",q:"La charge de la preuve en matière civile pèse en principe sur :",opts:["Le juge.","Celui qui réclame l'exécution d'une obligation (le demandeur).","Toujours le défendeur.","Aucune des réponses proposées."],correct:[1],exp:"« Actori incumbit probatio » : celui qui réclame l'exécution d'une obligation doit la prouver ; celui qui se prétend libéré doit prouver le paiement ou la cause d'extinction."},
+{n:45,dom:"Procédure civile",q:"Une décision civile devenue définitive, insusceptible de recours suspensif, a :",opts:["L'autorité de la chose jugée.","La force majeure.","La présomption d'innocence.","Aucune des réponses proposées."],correct:[0],exp:"L'autorité de la chose jugée interdit de rejuger ce qui a été définitivement tranché entre les mêmes parties, pour la même cause et le même objet."},
+{n:46,dom:"Procédure civile",q:"Parmi les voies de recours en procédure civile, on distingue :",opts:["L'appel.","Le pourvoi en cassation.","L'opposition.","La garde à vue.","Aucune des réponses proposées."],correct:[0,1,2],exp:"Appel et opposition sont des voies de recours ordinaires/de rétractation ; le pourvoi en cassation est une voie extraordinaire. La garde à vue est une mesure pénale."},
+{n:47,dom:"Procédure civile",q:"Le jugement rendu alors que le défendeur n'a ni comparu ni été représenté est un jugement :",opts:["Contradictoire.","Par défaut.","Avant dire droit.","Aucune des réponses proposées."],correct:[1],exp:"Le jugement par défaut est rendu contre une partie qui n'a pas comparu ; il est susceptible d'opposition dans les conditions prévues par la loi."},
+{n:48,dom:"Procédure civile",q:"La voie de recours ouverte contre un jugement rendu par défaut est en principe :",opts:["L'appel uniquement.","L'opposition.","Le pourvoi immédiat.","Aucune des réponses proposées."],correct:[1],exp:"L'opposition permet à la partie défaillante de faire rétracter le jugement par défaut devant la même juridiction."},
+{n:49,dom:"Procédure civile",q:"Pour agir en justice, une partie doit en principe justifier :",opts:["D'un intérêt à agir.","De la qualité pour agir.","D'une amitié avec le juge.","De la capacité d'ester en justice.","Aucune des réponses proposées."],correct:[0,1,3],exp:"L'action suppose intérêt, qualité et capacité (« pas d'intérêt, pas d'action »). L'amitié avec le juge serait au contraire une cause de récusation."},
+{n:50,dom:"Procédure civile",q:"Le délai pour interjeter appel commence en principe à courir :",opts:["Du jour de l'introduction de l'instance.","De la notification (signification) de la décision.","Du jour du dépôt de la première pièce.","Aucune des réponses proposées."],correct:[1],exp:"Les délais de recours courent, sauf exception, à compter de la notification/signification de la décision à la partie concernée."},
+{n:51,dom:"Procédure civile",q:"Lorsqu'une partie doute de l'impartialité d'un juge, elle peut exercer :",opts:["Une récusation.","Une saisie-attribution.","Une comparution immédiate.","Aucune des réponses proposées."],correct:[0],exp:"La récusation permet d'écarter d'une affaire un juge dont l'impartialité peut être mise en doute (parenté, intérêt, inimitié, etc.)."},
+{n:52,dom:"Procédure civile",q:"La conciliation ou la médiation en matière civile vise à :",opts:["Punir la partie fautive.","Rechercher un accord amiable entre les parties.","Nommer un nouveau juge.","Aucune des réponses proposées."],correct:[1],exp:"Conciliation et médiation sont des modes amiables de règlement des différends, cherchant un accord qui évite ou clôt le procès."},
+{n:53,dom:"Procédure civile",q:"L'exécution forcée d'un jugement civil suppose généralement :",opts:["Un titre exécutoire (par ex. la grosse).","L'apposition de la formule exécutoire.","L'accord préalable du débiteur.","L'intervention d'un huissier.","Aucune des réponses proposées."],correct:[0,1,3],exp:"L'exécution forcée nécessite un titre exécutoire revêtu de la formule exécutoire, mis en œuvre par huissier. L'accord du débiteur n'est pas requis : c'est justement une exécution « forcée »."},
+{n:54,dom:"Procédure civile",q:"La mesure rendant indisponibles des biens du débiteur pour garantir une créance est :",opts:["La saisie conservatoire.","La grâce.","L'amnistie.","Aucune des réponses proposées."],correct:[0],exp:"La saisie conservatoire immobilise les biens du débiteur afin de préserver les droits du créancier avant même l'obtention d'un titre définitif."},
+{n:55,dom:"Procédure civile",q:"La demande formée par le défendeur contre le demandeur, dans la même instance, est :",opts:["Une demande reconventionnelle.","Une exception d'incompétence.","Un désistement.","Aucune des réponses proposées."],correct:[0],exp:"La demande reconventionnelle est la prétention par laquelle le défendeur attaque à son tour le demandeur (ex. réclamer des dommages-intérêts)."},
+{n:56,dom:"Procédure civile",q:"Le désistement d'instance correspond à :",opts:["L'abandon de la procédure par le demandeur.","La condamnation du défendeur.","Le renvoi à une autre juridiction.","Aucune des réponses proposées."],correct:[0],exp:"Le désistement est l'acte par lequel le demandeur renonce à l'instance (ou à l'action), mettant fin au procès sous certaines conditions."},
+{n:57,dom:"Procédure civile",q:"L'ordonnance de référé se caractérise par :",opts:["Une procédure d'urgence.","Une décision provisoire ne tranchant pas le fond.","L'autorité absolue de la chose jugée au principal.","Aucune des réponses proposées."],correct:[0,1],exp:"Le référé permet, en urgence, d'obtenir des mesures provisoires ; l'ordonnance n'a pas l'autorité de la chose jugée au principal et ne préjuge pas le fond."},
+{n:58,dom:"Procédure civile",q:"L'exception d'incompétence est soulevée pour contester :",opts:["Le fond du droit.","Le pouvoir de la juridiction saisie à connaître de l'affaire.","La moralité de l'adversaire.","Aucune des réponses proposées."],correct:[1],exp:"L'exception d'incompétence conteste l'aptitude de la juridiction saisie (matérielle ou territoriale) à juger le litige, avant tout débat au fond."},
+{n:59,dom:"Procédure civile",q:"La signification d'un acte se fait en principe par :",opts:["Le juge lui-même.","L'huissier de justice.","Un simple appel téléphonique.","Aucune des réponses proposées."],correct:[1],exp:"La signification est la notification d'un acte par voie d'huissier, garantissant la preuve et la date de la remise."},
+{n:60,dom:"Procédure civile",q:"Un jugement civil doit en principe comporter :",opts:["Les motifs (motivation).","Le dispositif (ce qui est décidé).","L'identité des parties.","Les opinions politiques du juge.","Aucune des réponses proposées."],correct:[0,1,2],exp:"Tout jugement énonce les parties, les motifs (raisonnement) et le dispositif (décision). L'absence de motivation est une cause de nullité."},
 
-  <!-- ===== BOUTON WHATSAPP FLOTTANT ===== -->
-  <a id="whatsappFloat" href="https://wa.me/TONNUMERO?text=Bonjour%2C%20j%27ai%20une%20question%20sur%20vos%20livres."
-     class="whatsapp-float" target="_blank" rel="noopener" aria-label="Contacter sur WhatsApp">
-    <svg viewBox="0 0 32 32" fill="white" xmlns="http://www.w3.org/2000/svg">
-      <path d="M16 3C9.4 3 4 8.4 4 15c0 2.3.6 4.4 1.7 6.3L4 29l7.9-1.6c1.8.9 3.9 1.4 6.1 1.4 6.6 0 12-5.4 12-12S22.6 3 16 3zm0 21.8c-1.9 0-3.7-.5-5.3-1.4l-.4-.2-4.7 1 1-4.6-.2-.4C5.5 17.5 5 16.3 5 15c0-6.1 5-11 11-11s11 4.9 11 11-4.9 11-11 11z"/>
-      <path d="M22 18.3c-.3-.2-2-1-2.3-1.1-.3-.1-.5-.2-.7.2-.2.3-.8 1.1-1 1.3-.2.2-.4.2-.7.1-.3-.2-1.4-.5-2.6-1.6-1-.9-1.6-2-1.8-2.3-.2-.3 0-.5.1-.6.1-.1.3-.4.5-.5.1-.2.2-.3.3-.5.1-.2 0-.4 0-.5-.1-.2-.7-1.7-1-2.3-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.4s1 2.8 1.2 3c.1.2 2 3 4.8 4.3.7.3 1.2.5 1.6.6.7.2 1.3.2 1.8.1.6-.1 1.7-.7 1.9-1.3.2-.6.2-1.1.2-1.3-.1-.1-.3-.2-.6-.3z"/>
-    </svg>
-  </a>
+// ===== DOMAINE 4 : PROCÉDURE PÉNALE =====
+{n:61,dom:"Procédure pénale",q:"L'action publique, qui vise à sanctionner l'infraction au nom de la société, est mise en mouvement principalement par :",opts:["La victime seule.","Le ministère public (parquet).","Le greffier.","Aucune des réponses proposées."],correct:[1],exp:"L'action publique appartient au ministère public. La victime peut la déclencher par sa constitution de partie civile, mais c'est le parquet qui poursuit au nom de la société."},
+{n:62,dom:"Procédure pénale",q:"L'action civile devant la juridiction pénale appartient à :",opts:["La personne lésée par l'infraction.","Au procureur exclusivement.","Au témoin.","Aucune des réponses proposées."],correct:[0],exp:"L'action civile (réparation du préjudice) appartient à la victime (partie civile), distincte de l'action publique exercée par le parquet."},
+{n:63,dom:"Procédure pénale",q:"La classification tripartite des infractions distingue :",opts:["Les crimes.","Les délits.","Les contraventions.","Les fautes civiles.","Aucune des réponses proposées."],correct:[0,1,2],exp:"Les infractions se classent, selon leur gravité, en crimes, délits et contraventions : ce critère commande la juridiction compétente et la peine encourue."},
+{n:64,dom:"Procédure pénale",q:"La présomption d'innocence signifie que :",opts:["Le suspect doit prouver son innocence.","Toute personne poursuivie est réputée innocente jusqu'à preuve de sa culpabilité établie par jugement.","La police décide de la culpabilité.","Aucune des réponses proposées."],correct:[1],exp:"La présomption d'innocence impose de considérer la personne comme innocente tant qu'une décision définitive n'a pas établi sa culpabilité ; le doute lui profite."},
+{n:65,dom:"Procédure pénale",q:"La mesure retenant une personne suspectée par les services d'enquête, pour une durée légalement encadrée, est :",opts:["La détention provisoire.","La garde à vue.","L'emprisonnement définitif.","Aucune des réponses proposées."],correct:[1],exp:"La garde à vue est une rétention de courte durée, encadrée par la loi et contrôlée par le parquet, pendant l'enquête. La détention provisoire, elle, est ordonnée par un juge pendant l'instruction."},
+{n:66,dom:"Procédure pénale",q:"Le magistrat chargé d'instruire les affaires pénales complexes, à charge et à décharge, est :",opts:["Le juge d'instruction.","Le greffier en chef.","L'huissier.","Aucune des réponses proposées."],correct:[0],exp:"Le juge d'instruction mène l'information judiciaire de manière impartiale, en recherchant les éléments à charge et à décharge."},
+{n:67,dom:"Procédure pénale",q:"Au cours de l'information judiciaire, le juge d'instruction peut notamment :",opts:["Entendre les témoins et la personne mise en cause.","Ordonner des expertises.","Prononcer lui-même la peine définitive.","Décerner des mandats.","Aucune des réponses proposées."],correct:[0,1,3],exp:"Le juge d'instruction auditionne, ordonne expertises et perquisitions, décerne des mandats. Il ne prononce pas la peine : c'est la juridiction de jugement qui condamne."},
+{n:68,dom:"Procédure pénale",q:"La détention provisoire est en principe ordonnée ou contrôlée par :",opts:["Le seul officier de police judiciaire.","Un magistrat (juge d'instruction / juge compétent).","Le greffier.","Aucune des réponses proposées."],correct:[1],exp:"La privation de liberté avant jugement (détention provisoire) est une mesure exceptionnelle décidée et contrôlée par un magistrat, non par la seule police."},
+{n:69,dom:"Procédure pénale",q:"Les infractions les plus graves (crimes) sont jugées par :",opts:["Le tribunal de police.","La cour criminelle.","Le tribunal du travail.","Aucune des réponses proposées."],correct:[1],exp:"La cour criminelle juge les crimes ; le tribunal correctionnel juge les délits ; le tribunal de police les contraventions."},
+{n:70,dom:"Procédure pénale",q:"Les droits de la défense en procédure pénale comprennent notamment :",opts:["Le droit d'être assisté d'un avocat.","Le droit d'être informé des charges.","Le droit au silence dans les conditions prévues.","L'obligation de s'auto-incriminer.","Aucune des réponses proposées."],correct:[0,1,2],exp:"La défense implique l'assistance d'un avocat, l'information sur les charges et le droit de se taire. Nul n'est tenu de s'auto-incriminer."},
+{n:71,dom:"Procédure pénale",q:"L'officier de police judiciaire agit sous la direction et le contrôle :",opts:["Du greffier en chef.","Du ministère public (procureur).","De l'avocat de la défense.","Aucune des réponses proposées."],correct:[1],exp:"La police judiciaire est placée sous la direction du procureur et le contrôle de l'autorité judiciaire dans la conduite des enquêtes."},
+{n:72,dom:"Procédure pénale",q:"L'acte par lequel le ministère public saisit la juridiction de jugement des faits reprochés au prévenu est notamment :",opts:["La citation directe / la décision de renvoi.","Le désistement.","L'expédition.","Aucune des réponses proposées."],correct:[0],exp:"Le parquet peut saisir la juridiction par citation directe, ou par une ordonnance/décision de renvoi à l'issue de l'instruction."},
+{n:73,dom:"Procédure pénale",q:"Parmi les principes du procès pénal équitable figurent :",opts:["La légalité des délits et des peines.","La présomption d'innocence.","Le caractère contradictoire des débats.","La rétroactivité de la loi pénale plus sévère.","Aucune des réponses proposées."],correct:[0,1,2],exp:"Légalité des délits et des peines, présomption d'innocence et contradictoire sont des piliers du procès équitable. La loi pénale plus sévère ne rétroagit pas."},
+{n:74,dom:"Procédure pénale",q:"Le principe « nul crime, nulle peine sans loi » (légalité criminelle) implique que :",opts:["Le juge peut créer librement des infractions.","Une infraction et sa peine doivent être prévues par un texte préexistant.","La police fixe les peines.","Aucune des réponses proposées."],correct:[1],exp:"La légalité criminelle exige qu'aucune peine ne soit infligée pour un fait non prévu et réprimé par un texte en vigueur au moment des faits."},
+{n:75,dom:"Procédure pénale",q:"L'application aux faits non définitivement jugés d'une loi pénale nouvelle plus douce est le principe de :",opts:["La rétroactivité in mitius (loi plus douce).","La prescription.","L'amnistie.","Aucune des réponses proposées."],correct:[0],exp:"La rétroactivité in mitius fait bénéficier le prévenu de la loi nouvelle plus douce pour les faits non encore définitivement jugés."},
+{n:76,dom:"Procédure pénale",q:"Dans le procès pénal, le greffier a notamment pour rôle :",opts:["De tenir les notes d'audience (plumitif).","D'authentifier les procès-verbaux et la minute du jugement.","De prononcer le verdict de culpabilité.","De consigner les déclarations des témoins.","Aucune des réponses proposées."],correct:[0,1,3],exp:"Le greffier assiste la juridiction pénale, tient les notes d'audience, consigne les déclarations et authentifie les actes. Le verdict appartient à la juridiction de jugement."},
+{n:77,dom:"Procédure pénale",q:"L'extinction de l'action publique par l'écoulement d'un certain délai est :",opts:["La prescription de l'action publique.","La récusation.","La consignation.","Aucune des réponses proposées."],correct:[0],exp:"La prescription éteint l'action publique lorsque, passé un délai légal (variable selon la gravité), aucune poursuite n'a abouti."},
+{n:78,dom:"Procédure pénale",q:"Les voies de recours en matière pénale comprennent notamment :",opts:["L'appel du jugement correctionnel.","Le pourvoi en cassation.","L'opposition au jugement rendu par défaut.","La saisie-arrêt.","Aucune des réponses proposées."],correct:[0,1,2],exp:"Appel, opposition (jugement par défaut) et pourvoi en cassation sont des voies de recours pénales. La saisie-arrêt est une mesure d'exécution civile."},
+{n:79,dom:"Procédure pénale",q:"Le registre officiel recensant les condamnations pénales d'une personne est :",opts:["Le rôle.","Le casier judiciaire.","Le plumitif.","Aucune des réponses proposées."],correct:[1],exp:"Le casier judiciaire consigne les condamnations pénales ; ses extraits (bulletins) sont délivrés selon des règles précises et servent notamment pour les concours de la fonction publique."},
+{n:80,dom:"Procédure pénale",q:"La personne poursuivie devant le tribunal correctionnel pour un délit est désignée comme :",opts:["Le demandeur.","Le prévenu.","L'accusé.","Aucune des réponses proposées."],correct:[1],exp:"Devant le tribunal correctionnel (délit), on parle de « prévenu » ; « accusé » désigne la personne renvoyée devant la cour criminelle (crime)."}
+];
 
-  <script src="script.js"></script>
+/* ================= MOTEUR ================= */
+const DOMAINS = ["Organisation judiciaire","Rôle & actes du greffier","Procédure civile","Procédure pénale"];
+let state = {domains:new Set(DOMAINS), mode:"train", shuffle:true, list:[], idx:0, answers:{}, validated:{}, examEnd:0, timerId:null};
+
+const $ = s => document.querySelector(s);
+const shuffle = a => { for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];} return a; };
+
+function renderChips(){
+  const c = $("#domainChips"); c.innerHTML="";
+  DOMAINS.forEach(d=>{
+    const n = QUESTIONS.filter(q=>q.dom===d).length;
+    const el = document.createElement("span");
+    el.className="chip"+(state.domains.has(d)?" active":"");
+    el.innerHTML = d+" <small>("+n+")</small>";
+    el.onclick=()=>{ state.domains.has(d)?state.domains.delete(d):state.domains.add(d); renderChips(); updateCount(); };
+    c.appendChild(el);
+  });
+}
+function updateCount(){
+  const n = QUESTIONS.filter(q=>state.domains.has(q.dom)).length;
+  $("#countInfo").textContent = n+" question(s) sélectionnée(s)";
+  $("#startBtn").disabled = n===0;
+}
+
+$("#modeTrain").onclick=()=>{state.mode="train";$("#modeTrain").classList.add("active");$("#modeExam").classList.remove("active");};
+$("#modeExam").onclick=()=>{state.mode="exam";$("#modeExam").classList.add("active");$("#modeTrain").classList.remove("active");};
+$("#shuffleChip").onclick=()=>{state.shuffle=!state.shuffle;$("#shuffleChip").classList.toggle("active",state.shuffle);};
+
+$("#startBtn").onclick=()=>{
+  let list = QUESTIONS.filter(q=>state.domains.has(q.dom)).map(q=>({...q,opts:q.opts.map((t,i)=>({t,i}))}));
+  if(state.shuffle){ list=shuffle(list); list.forEach(q=>shuffle(q.opts)); }
+  state.list=list; state.idx=0; state.answers={}; state.validated={};
+  $("#home").classList.add("hidden"); $("#results").classList.add("hidden"); $("#quiz").classList.remove("hidden");
+  if(state.mode==="exam"){ startTimer(); } else { $("#timer").classList.add("hidden"); }
+  render();
+};
+
+function startTimer(){
+  $("#timer").classList.remove("hidden");
+  state.examEnd = Date.now()+2*60*60*1000;
+  clearInterval(state.timerId);
+  state.timerId=setInterval(()=>{
+    let ms=state.examEnd-Date.now();
+    if(ms<=0){ms=0;clearInterval(state.timerId);finish();}
+    const h=Math.floor(ms/3.6e6),m=Math.floor(ms%3.6e6/6e4),s=Math.floor(ms%6e4/1e3);
+    $("#timer").textContent=[h,m,s].map(x=>String(x).padStart(2,"0")).join(":");
+  },500);
+}
+
+function render(){
+  const q=state.list[state.idx];
+  $("#pos").textContent=`Question ${state.idx+1} / ${state.list.length}`;
+  $("#bar").style.width=((state.idx)/state.list.length*100)+"%";
+  const multi=q.correct.length>1;
+  let html=`<div class="qhead"><span class="tag">${q.dom}</span><span class="tag ${multi?'multi':''}">${multi?'Réponses multiples':'Réponse unique'}</span></div>`;
+  html+=`<div class="qtext">${q.n}. ${q.q}</div>`;
+  const chosen=state.answers[q.orig]||[];
+  const isVal=state.validated[q.orig];
+  q.opts.forEach(o=>{
+    let cls="opt";
+    if(isVal){
+      if(q.correct.includes(o.i)) cls+=" correct";
+      else if(chosen.includes(o.i)) cls+=" wrong";
+    }
+    html+=`<label class="opt ${cls.replace('opt','').trim()}">
+      <input type="${multi?'checkbox':'radio'}" name="opt" value="${o.i}" ${chosen.includes(o.i)?'checked':''} ${isVal?'disabled':''}>
+      <span>${o.t}</span></label>`;
+  });
+  $("#qbox").innerHTML=html;
+  $("#qbox").querySelectorAll("input").forEach(inp=>{
+    inp.onchange=()=>{
+      let cur=state.answers[q.orig]||[];
+      if(multi){ inp.checked?cur.push(+inp.value):(cur=cur.filter(v=>v!=inp.value)); }
+      else { cur=[+inp.value]; }
+      state.answers[q.orig]=cur;
+    };
+  });
+  // explication
+  const ex=$("#explain");
+  if(isVal && state.mode==="train"){
+    const good=q.correct.map(i=>q.opts.find(o=>o.i===i).t).join(" · ");
+    ex.innerHTML=`<b>Bonne réponse :</b> ${good}<br><b>Explication :</b> ${q.exp}`;
+    ex.classList.add("show");
+  } else ex.classList.remove("show");
+  // boutons
+  $("#prevBtn").disabled=state.idx===0;
+  $("#validBtn").classList.toggle("hidden", state.mode==="exam" || isVal);
+  $("#nextBtn").textContent = state.idx===state.list.length-1 ? "Terminer ✓" : "Suivant ▶";
+}
+
+$("#validBtn").onclick=()=>{ const q=state.list[state.idx]; state.validated[q.orig]=true; render(); };
+$("#prevBtn").onclick=()=>{ if(state.idx>0){state.idx--;render();} };
+$("#nextBtn").onclick=()=>{ if(state.idx<state.list.length-1){state.idx++;render();} else finish(); };
+$("#quitBtn").onclick=e=>{e.preventDefault(); if(confirm("Quitter et revenir à l'accueil ?")){clearInterval(state.timerId);$("#quiz").classList.add("hidden");$("#home").classList.remove("hidden");}};
+
+function score(){
+  let ok=0; const byDom={};
+  DOMAINS.forEach(d=>byDom[d]={ok:0,n:0});
+  state.list.forEach(q=>{
+    byDom[q.dom].n++;
+    const a=(state.answers[q.orig]||[]).slice().sort().join(",");
+    const c=q.correct.slice().sort().join(",");
+    if(a===c){ok++;byDom[q.dom].ok++;}
+  });
+  return {ok,total:state.list.length,byDom};
+}
+
+function finish(){
+  clearInterval(state.timerId);
+  state.list.forEach(q=>state.validated[q.orig]=true);
+  const s=score();
+  $("#quiz").classList.add("hidden"); $("#results").classList.remove("hidden");
+  $("#scorePct").textContent=Math.round(s.ok/s.total*100)+"%";
+  $("#scoreRaw").textContent=s.ok+"/"+s.total;
+  let bd="";
+  DOMAINS.forEach(d=>{ if(s.byDom[d].n>0){ bd+=`<div class="row" style="justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--line)"><span>${d}</span><span class="stat">${s.byDom[d].ok}/${s.byDom[d].n}</span></div>`; }});
+  $("#domainBreakdown").innerHTML=bd;
+}
+
+$("#reviewBtn").onclick=()=>{ state.mode="train"; state.idx=0; $("#results").classList.add("hidden"); $("#quiz").classList.remove("hidden"); $("#timer").classList.add("hidden"); render(); };
+$("#againBtn").onclick=()=>{ $("#results").classList.add("hidden"); $("#home").classList.remove("hidden"); };
+
+// init
+QUESTIONS.forEach(q=>q.orig=q.n);
+renderChips(); updateCount();
+</script>
 </body>
 </html>
