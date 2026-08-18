@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>QCM Concours Contrôleur du Trésor - Mauritanie</title>
+    <title>QCM Contrôleur du Trésor - Mode Apprentissage</title>
     <style>
         * {
             margin: 0;
@@ -60,23 +60,8 @@
             border-bottom: 2px solid #e0e0e0;
         }
 
-        .timer {
-            font-size: 24px;
-            font-weight: bold;
-            color: #1F4788;
-            background: #f0f4ff;
-            padding: 12px 20px;
-            border-radius: 8px;
-            font-family: 'Courier New', monospace;
-        }
-
-        .timer.warning {
-            color: #d32f2f;
-            background: #ffebee;
-        }
-
         .score-box {
-            text-align: right;
+            text-align: center;
         }
 
         .score-label {
@@ -89,7 +74,7 @@
         .score-value {
             font-size: 28px;
             font-weight: bold;
-            color: #1F4788;
+            color: #4caf50;
         }
 
         .progress-bar {
@@ -149,6 +134,7 @@
             display: flex;
             flex-direction: column;
             gap: 12px;
+            margin-bottom: 20px;
         }
 
         .option {
@@ -163,7 +149,7 @@
             gap: 12px;
         }
 
-        .option:hover {
+        .option:hover:not(.answered) {
             border-color: #1F4788;
             background: #f5f9ff;
         }
@@ -182,6 +168,10 @@
             color: #333;
         }
 
+        .option.answered {
+            cursor: default;
+        }
+
         .option.selected {
             border-color: #1F4788;
             background: #f0f4ff;
@@ -190,12 +180,111 @@
 
         .option.correct {
             border-color: #4caf50;
-            background: #f1f8f4;
+            background: #e8f5e9;
+            font-weight: 600;
+        }
+
+        .option.correct::after {
+            content: "✓ CORRECT";
+            color: #4caf50;
+            font-weight: 700;
+            font-size: 12px;
         }
 
         .option.incorrect {
             border-color: #d32f2f;
+            background: #ffebee;
+            opacity: 0.7;
+        }
+
+        .option.incorrect::after {
+            content: "✗ INCORRECT";
+            color: #d32f2f;
+            font-weight: 700;
+            font-size: 12px;
+        }
+
+        .feedback-box {
+            background: #f5f5f5;
+            border-left: 4px solid #1F4788;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            display: none;
+        }
+
+        .feedback-box.show {
+            display: block;
+            animation: slideIn 0.3s ease;
+        }
+
+        .feedback-box.correct {
+            border-left-color: #4caf50;
+            background: #f1f8f4;
+        }
+
+        .feedback-box.incorrect {
+            border-left-color: #d32f2f;
             background: #fff5f5;
+        }
+
+        .feedback-title {
+            font-weight: 700;
+            font-size: 16px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .feedback-box.correct .feedback-title {
+            color: #4caf50;
+        }
+
+        .feedback-box.incorrect .feedback-title {
+            color: #d32f2f;
+        }
+
+        .feedback-correct {
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .feedback-correct label {
+            font-weight: 600;
+            color: #333;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .feedback-correct p {
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        .feedback-explanation {
+            background: white;
+            padding: 15px;
+            border-radius: 6px;
+            margin-top: 10px;
+            line-height: 1.6;
+            color: #555;
+        }
+
+        .feedback-explanation strong {
+            color: #1F4788;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .navigation {
@@ -225,7 +314,7 @@
             flex: 1;
         }
 
-        .btn-primary:hover {
+        .btn-primary:hover:not(:disabled) {
             background: #152d52;
             transform: translateY(-2px);
             box-shadow: 0 8px 20px rgba(31, 71, 136, 0.3);
@@ -236,7 +325,7 @@
             color: #333;
         }
 
-        .btn-secondary:hover {
+        .btn-secondary:hover:not(:disabled) {
             background: #d0d0d0;
         }
 
@@ -246,18 +335,18 @@
             transform: none;
         }
 
-        .start-screen, .results-screen, .review-screen {
+        .start-screen, .results-screen {
             text-align: center;
             padding: 40px 20px;
         }
 
-        .start-screen h2, .results-screen h2, .review-screen h2 {
+        .start-screen h2, .results-screen h2 {
             font-size: 28px;
             color: #1F4788;
             margin-bottom: 20px;
         }
 
-        .start-screen p, .results-screen p, .review-screen p {
+        .start-screen p, .results-screen p {
             font-size: 16px;
             color: #666;
             margin-bottom: 15px;
@@ -348,47 +437,6 @@
             display: none;
         }
 
-        .question-summary {
-            background: #f5f5f5;
-            padding: 20px;
-            margin-bottom: 20px;
-            border-radius: 8px;
-            text-align: left;
-        }
-
-        .summary-item {
-            padding: 10px;
-            margin-bottom: 10px;
-            border-left: 4px solid #e0e0e0;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .summary-item:hover {
-            background: white;
-            border-left-color: #1F4788;
-        }
-
-        .summary-item.correct-answer {
-            border-left-color: #4caf50;
-        }
-
-        .summary-item.wrong-answer {
-            border-left-color: #d32f2f;
-        }
-
-        .summary-item-text {
-            font-weight: 600;
-            margin-bottom: 5px;
-            color: #333;
-        }
-
-        .summary-item-question {
-            font-size: 14px;
-            color: #666;
-            margin-bottom: 5px;
-        }
-
         @media (max-width: 768px) {
             .content {
                 padding: 20px;
@@ -401,10 +449,6 @@
             .timer-score {
                 flex-direction: column;
                 gap: 15px;
-                text-align: center;
-            }
-
-            .score-box {
                 text-align: center;
             }
 
@@ -427,32 +471,32 @@
     <div class="container">
         <div class="header">
             <h1>🎓 QCM Concours Contrôleur du Trésor</h1>
-            <p>République Islamique de Mauritanie</p>
+            <p>Mode Apprentissage - Avec Explications Immédiates</p>
         </div>
 
         <!-- START SCREEN -->
         <div id="startScreen" class="content">
             <div class="start-screen">
-                <h2>Bienvenue au Simulateur QCM</h2>
-                <p>Préparez-vous efficacement pour le concours de Contrôleur du Trésor Public</p>
+                <h2>Mode Apprentissage Interactif</h2>
+                <p>Répondez aux questions et découvrez immédiatement les explications</p>
                 
                 <div class="start-info">
                     <h3 style="color: #1F4788; margin-bottom: 15px;">📋 Format du Test:</h3>
                     <ul>
-                        <li>✓ <strong>62 questions</strong> au total</li>
-                        <li>✓ 4 domaines d'étude couverts</li>
-                        <li>✓ <strong>Durée: 90 minutes</strong></li>
-                        <li>✓ Réponses multiples à choix unique</li>
-                        <li>✓ Résultats détaillés par domaine</li>
+                        <li>✓ <strong>62 questions</strong> avec explications détaillées</li>
+                        <li>✓ 5 domaines d'étude couverts</li>
+                        <li>✓ Feedback immédiat après chaque réponse</li>
+                        <li>✓ Voir la réponse correcte et la justification</li>
+                        <li>✓ Score cumulatif mis à jour en temps réel</li>
                     </ul>
                 </div>
 
                 <p style="font-size: 14px; color: #888; margin-bottom: 30px;">
-                    ⏱️ Le chronomètre démarre automatiquement. Répondez à toutes les questions sans sauter.
+                    💡 Cliquez sur une réponse pour voir immédiatement si elle est correcte et pourquoi.
                 </p>
 
                 <button class="btn btn-primary" onclick="startTest()" style="width: 200px; margin: 0 auto; display: block;">
-                    Commencer le Test
+                    Commencer l'Apprentissage
                 </button>
             </div>
         </div>
@@ -460,9 +504,8 @@
         <!-- QUIZ SCREEN -->
         <div id="quizScreen" class="content hidden">
             <div class="timer-score">
-                <div class="timer" id="timer">01:30:00</div>
                 <div class="score-box">
-                    <div class="score-label">Score</div>
+                    <div class="score-label">Réponses Correctes</div>
                     <div class="score-value"><span id="currentScore">0</span>/<span id="totalScore">62</span></div>
                 </div>
             </div>
@@ -478,11 +521,11 @@
                     ← Précédent
                 </button>
                 <div style="flex: 1;"></div>
-                <button class="btn btn-primary" id="nextBtn" onclick="nextQuestion()">
+                <button class="btn btn-primary" id="nextBtn" onclick="nextQuestion()" style="display: none;">
                     Suivant →
                 </button>
-                <button class="btn btn-primary" id="submitBtn" onclick="submitTest()" style="display: none; background: #4caf50;">
-                    Soumettre & Voir Résultats
+                <button class="btn btn-primary" id="finishBtn" onclick="finishLearning()" style="display: none; background: #4caf50;">
+                    Voir mes Résultats Finaux
                 </button>
             </div>
         </div>
@@ -490,7 +533,7 @@
         <!-- RESULTS SCREEN -->
         <div id="resultsScreen" class="content hidden">
             <div class="results-screen">
-                <h2>📊 Résultats de votre Test</h2>
+                <h2>📊 Résumé de votre Apprentissage</h2>
                 <div class="result-score" id="resultScore">0</div>
                 <div class="result-percentage" id="resultPercentage">0%</div>
                 <div class="result-message" id="resultMessage"></div>
@@ -498,30 +541,8 @@
                 <div class="results-by-domain" id="resultsByDomain"></div>
 
                 <div style="margin-top: 30px; gap: 15px; display: flex; flex-direction: column;">
-                    <button class="btn btn-primary" onclick="reviewAnswers()" style="width: 250px; margin: 0 auto;">
-                        Réviser vos Réponses
-                    </button>
-                    <button class="btn btn-secondary" onclick="restartTest()" style="width: 250px; margin: 0 auto;">
-                        Recommencer le Test
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        <!-- REVIEW SCREEN -->
-        <div id="reviewScreen" class="content hidden">
-            <div class="review-screen">
-                <h2>📝 Révision de vos Réponses</h2>
-                <p>Consultez vos réponses et les corrections</p>
-                
-                <div class="question-summary" id="reviewSummary"></div>
-
-                <div style="margin-top: 30px;">
-                    <button class="btn btn-secondary" onclick="goBackToResults()">
-                        ← Retour aux Résultats
-                    </button>
-                    <button class="btn btn-primary" onclick="restartTest()" style="margin-left: 10px;">
-                        Recommencer le Test
+                    <button class="btn btn-primary" onclick="restartTest()" style="width: 250px; margin: 0 auto;">
+                        Recommencer
                     </button>
                 </div>
             </div>
@@ -529,7 +550,7 @@
     </div>
 
     <script>
-        // Base de données des 62 questions
+        // Base de données complète avec explications
         const questions = [
             // TRÉSOR PUBLIC (13 questions)
             {
@@ -542,7 +563,8 @@
                     "Juger les litiges fiscaux",
                     "Diriger les entreprises publiques"
                 ],
-                correct: 0
+                correct: 0,
+                explanation: "Le Trésor public est le centre financier de l'État. Il collecte toutes les recettes publiques (impôts, taxes), gère la trésorerie de l'État et effectue tous les paiements autorisés. C'est l'institution centrale pour la gestion des finances publiques de la Mauritanie."
             },
             {
                 id: 2,
@@ -554,7 +576,8 @@
                     "L'Ordonnateur",
                     "Le Parlement"
                 ],
-                correct: 2
+                correct: 2,
+                explanation: "L'ordonnateur est le responsable administratif qui autorise et ordonne les dépenses publiques. C'est généralement un ministre ou un chef de département. Le comptable public, lui, effectue le paiement suite à l'ordonnance."
             },
             {
                 id: 3,
@@ -566,7 +589,8 @@
                     "Celui qui paye les factures",
                     "Celui qui collecte les impôts"
                 ],
-                correct: 1
+                correct: 1,
+                explanation: "Un ordonnateur est un agent de l'État qui a le pouvoir d'engager, de liquider et d'ordonnancer une dépense. Il peut être un ministre, un directeur de ministère ou tout autre agent public habilité. Son rôle est crucial dans la chaîne des dépenses publiques."
             },
             {
                 id: 4,
@@ -578,7 +602,8 @@
                     "Les recettes concernent les ministères, les dépenses l'Assemblée",
                     "Il n'existe que des recettes"
                 ],
-                correct: 1
+                correct: 1,
+                explanation: "Les recettes publiques sont l'ensemble des entrées de fonds pour l'État (impôts, taxes, emprunts). Les dépenses publiques sont l'ensemble des sorties de fonds (salaires, achats, investissements). L'équilibre entre les deux est crucial pour la santé financière de l'État."
             },
             {
                 id: 5,
@@ -590,7 +615,8 @@
                     "Les comptes bancaires",
                     "Les décrets ministériels"
                 ],
-                correct: 1
+                correct: 1,
+                explanation: "Le budget de l'État est le document officiel qui prévoit toutes les recettes et dépenses pour une année civile. Il est voter par le Parlement et constitue la base de toute gestion financière publique."
             },
             {
                 id: 6,
@@ -602,7 +628,8 @@
                     "Le Parlement (Assemblée Nationale)",
                     "Le Trésor public"
                 ],
-                correct: 2
+                correct: 2,
+                explanation: "En vertu du principe démocratique, le budget de l'État doit être voté par le Parlement (l'Assemblée Nationale en Mauritanie). Cela garantit que les finances publiques sont gérées avec l'approbation des représentants du peuple."
             },
             {
                 id: 7,
@@ -614,7 +641,8 @@
                     "Principe d'équilibre",
                     "Principe de spécialité"
                 ],
-                correct: 1
+                correct: 1,
+                explanation: "Le principe d'universalité stipule que toutes les recettes et dépenses publiques doivent figurer au budget, sans exception. Aucun fonds ne doit être géré en dehors du budget. Cela assure la transparence et le contrôle."
             },
             {
                 id: 8,
@@ -626,7 +654,8 @@
                     "Les crédits doivent être spécialisés par région",
                     "Les crédits doivent être remboursés"
                 ],
-                correct: 0
+                correct: 0,
+                explanation: "Le principe de spécialité des crédits signifie que chaque crédit budgétaire est destiné à un usage particulier et ne peut pas être détourné. Un crédit pour l'éducation ne peut pas être utilisé pour la défense, par exemple."
             },
             {
                 id: 9,
@@ -638,7 +667,8 @@
                     "La couverture des dépenses déficitaires",
                     "L'organisation des réunions de crise"
                 ],
-                correct: 1
+                correct: 1,
+                explanation: "Le recouvrement est l'ensemble des opérations de perception et de collecte des recettes publiques (impôts, taxes, droits de douane, etc.). C'est une fonction essentielle du Trésor pour financer le budget de l'État."
             },
             {
                 id: 10,
@@ -650,7 +680,8 @@
                     "Après la fin du mois suivant",
                     "Selon la volonté du Trésorier"
                 ],
-                correct: 1
+                correct: 1,
+                explanation: "Dans la plupart des pays, y compris la Mauritanie, le délai légal de paiement pour l'administration publique est de 30 jours maximum après réception de la facture. Cela protège les créanciers de l'État tout en respectant les délais administratifs."
             },
             {
                 id: 11,
@@ -662,7 +693,8 @@
                     "La Cour des Comptes",
                     "La Banque Centrale"
                 ],
-                correct: 2
+                correct: 2,
+                explanation: "La Cour des Comptes est l'institution responsable du contrôle suprême et du jugement des comptes de l'État. Elle vérifie la légalité, la régularité et l'efficacité de la gestion des finances publiques."
             },
             {
                 id: 12,
@@ -674,7 +706,8 @@
                     "Une dépense autorisée mais jamais réalisée",
                     "Une dépense supérieure au budget prévu"
                 ],
-                correct: 1
+                correct: 1,
+                explanation: "Une dépense engagée est une dépense qui a été ordonnée par l'ordonnateur (commande d'un service, achat de biens) mais qui n'a pas encore été payée. Elle figure au budget mais reste à liquider et payer."
             },
             {
                 id: 13,
@@ -686,7 +719,8 @@
                     "De la Défense",
                     "De l'Économie"
                 ],
-                correct: 1
+                correct: 1,
+                explanation: "Le Trésor public relève du ministère des Finances (ou du Trésor dans certains pays). C'est un département clé du gouvernement responsable de la gestion de la trésorerie de l'État."
             },
 
             // COMPTABILITÉ (13 questions)
@@ -700,7 +734,8 @@
                     "Il faut enregistrer deux fois chaque opération",
                     "Il existe deux types de comptabilité"
                 ],
-                correct: 1
+                correct: 1,
+                explanation: "La comptabilité en partie double stipule que chaque opération affecte au moins deux comptes: un compte débité et un compte crédité. Cela assure l'équilibre comptable fondamental: Actif = Passif + Capitaux Propres."
             },
             {
                 id: 15,
@@ -712,7 +747,8 @@
                     "Un débit",
                     "Une réduction des capitaux propres"
                 ],
-                correct: 2
+                correct: 2,
+                explanation: "Une augmentation de l'actif (ce que l'on possède) se traduit par un DÉBIT du compte d'actif. Par exemple, si on reçoit de l'argent, on débite le compte caisse/banque."
             },
             {
                 id: 16,
@@ -724,7 +760,8 @@
                     "Actif = Passif + Capitaux Propres",
                     "Passif = Charges + Produits"
                 ],
-                correct: 2
+                correct: 2,
+                explanation: "L'équation fondamentale du bilan est: Actif = Passif + Capitaux Propres. Cette équation doit toujours être équilibrée. L'actif représente ce que l'on possède, le passif ce que l'on doit, et les capitaux propres la part des propriétaires."
             },
             {
                 id: 17,
@@ -736,7 +773,8 @@
                     "Les bénéfices de l'année",
                     "Les dépenses engagées"
                 ],
-                correct: 1
+                correct: 1,
+                explanation: "L'actif d'un bilan comprend tous les biens et droits de l'entreprise/administration: les immobilisations (terrains, bâtiments, équipements) et l'actif circulant (cash, créances, stocks)."
             },
             {
                 id: 18,
@@ -748,7 +786,8 @@
                     "Les revenus générés",
                     "Les investissements réalisés"
                 ],
-                correct: 1
+                correct: 1,
+                explanation: "Le passif d'un bilan comprend toutes les obligations de l'entreprise/administration: les dettes à court terme (fournisseurs, impôts à payer) et à long terme (emprunts), ainsi que les capitaux propres."
             },
             {
                 id: 19,
@@ -760,7 +799,8 @@
                     "Le bilan de vérification",
                     "Le journal comptable"
                 ],
-                correct: 1
+                correct: 1,
+                explanation: "Le compte de résultat (ou compte d'exploitation) résume tous les produits (revenus) et toutes les charges (dépenses) d'une période donnée, généralement une année. Il permet de calculer le bénéfice ou la perte nette."
             },
             {
                 id: 20,
@@ -772,7 +812,8 @@
                     "Les actifs et les passifs",
                     "La trésorerie disponible"
                 ],
-                correct: 1
+                correct: 1,
+                explanation: "Le compte de résultat mesure la performance financière d'une période: Résultat = Produits - Charges. Un résultat positif indique un bénéfice, un résultat négatif indique une perte."
             },
             {
                 id: 21,
@@ -784,7 +825,8 @@
                     "Le stock (ou charges d'achat)",
                     "Les dettes"
                 ],
-                correct: 2
+                correct: 2,
+                explanation: "Quand on achète des marchandises à crédit, on débite le compte de stock (ou compte d'achat) pour enregistrer l'entrée de marchandises, et on crédite le compte fournisseurs pour enregistrer la dette."
             },
             {
                 id: 22,
@@ -796,7 +838,8 @@
                     "Une décision judiciaire",
                     "Un type de garantie"
                 ],
-                correct: 1
+                correct: 1,
+                explanation: "Une créance est un droit de recevoir une somme d'argent d'une autre partie. Exemples: créances sur clients, créances fiscales, créances sociales. Les créances sont des actifs."
             },
             {
                 id: 23,
@@ -808,7 +851,8 @@
                     "Elles sont moins liquides que les dettes",
                     "La loi l'impose"
                 ],
-                correct: 1
+                correct: 1,
+                explanation: "Les créances sont à l'actif car elles représentent un droit de recevoir des ressources futures. C'est de la richesse à venir pour l'entreprise/administration."
             },
             {
                 id: 24,
@@ -820,7 +864,8 @@
                     "Une augmentation de l'actif",
                     "Une augmentation des charges"
                 ],
-                correct: 1
+                correct: 1,
+                explanation: "Une hausse des dettes (passif) se traduit par un CRÉDIT du compte de passif. Par exemple, si on emprunte de l'argent, on crédite le compte d'emprunt."
             },
             {
                 id: 25,
@@ -832,7 +877,8 @@
                     "Les dépôts en banque uniquement",
                     "Les chèques reçus"
                 ],
-                correct: 1
+                correct: 1,
+                explanation: "Le compte de caisse enregistre toutes les opérations d'argent en espèces: les reçus (débits) et les paiements (crédits). Il doit être réconcilié régulièrement."
             },
             {
                 id: 26,
@@ -844,7 +890,8 @@
                     "Un compte d'actif circulant",
                     "Un compte d'immobilisations"
                 ],
-                correct: 2
+                correct: 2,
+                explanation: "Une créance client est un compte d'actif circulant. Elle représente l'argent que les clients nous doivent. Elle est moins liquide que la caisse mais plus que les immobilisations."
             },
 
             // ÉCONOMIE (13 questions)
@@ -858,7 +905,8 @@
                     "Le nombre d'entreprises",
                     "L'inflation annuelle"
                 ],
-                correct: 1
+                correct: 1,
+                explanation: "Le PIB (Produit Intérieur Brut) mesure la valeur totale de tous les biens et services produits à l'intérieur d'un pays pendant une période donnée (généralement une année). C'est l'indicateur principal de la richesse économique."
             },
             {
                 id: 28,
@@ -870,7 +918,8 @@
                     "Une hausse des impôts",
                     "Une réduction de la production"
                 ],
-                correct: 0
+                correct: 0,
+                explanation: "L'inflation est l'augmentation générale et durable du niveau des prix. Elle réduit le pouvoir d'achat: avec la même somme d'argent, on peut acheter moins de biens. Elle est mesurée par l'indice des prix à la consommation (IPC)."
             },
             {
                 id: 29,
@@ -882,7 +931,8 @@
                     "Le nombre de demandes d'emploi",
                     "La durée moyenne de recherche d'emploi"
                 ],
-                correct: 1
+                correct: 1,
+                explanation: "Le taux de chômage = (Chômeurs / Population active) × 100. Il mesure la proportion des personnes en âge de travailler qui sont sans emploi mais qui cherchent activement."
             },
             {
                 id: 30,
@@ -894,7 +944,8 @@
                     "Augmentation des salaires de tous",
                     "Disparition de la pauvreté"
                 ],
-                correct: 0
+                correct: 0,
+                explanation: "Une croissance économique positive signifie que le PIB augmente d'une année à l'autre. Cela indique que l'économie se développe et produit plus de richesse, mais n'implique pas nécessairement une baisse du chômage ou une augmentation des salaires."
             },
             {
                 id: 31,
@@ -906,7 +957,8 @@
                     "L'Ouguiya",
                     "Le Franc"
                 ],
-                correct: 2
+                correct: 2,
+                explanation: "La monnaie officielle de la Mauritanie est l'Ouguiya (MRU). Elle est divisée en 5 khoums. La Banque Centrale de Mauritanie est responsable de l'émission et du contrôle de la monnaie."
             },
             {
                 id: 32,
@@ -918,7 +970,8 @@
                     "La Banque Centrale",
                     "Les banques commerciales"
                 ],
-                correct: 2
+                correct: 2,
+                explanation: "Le taux directeur (ou taux clé) est fixé par la Banque Centrale. C'est le taux auquel les banques centrales prêtent aux banques commerciales. Il influence tous les autres taux d'intérêt de l'économie."
             },
             {
                 id: 33,
@@ -930,7 +983,8 @@
                     "Diminuer les impôts",
                     "Augmenter les salaires"
                 ],
-                correct: 1
+                correct: 1,
+                explanation: "Une augmentation du taux directeur rend le crédit plus cher pour les entreprises et les ménages. Cela ralentit l'économie et la consommation, réduisant l'inflation. C'est un outil de politique monétaire restrictive."
             },
             {
                 id: 34,
@@ -942,7 +996,8 @@
                     "L'égalité entre recettes et dépenses",
                     "Une augmentation des impôts"
                 ],
-                correct: 0
+                correct: 0,
+                explanation: "Un déficit budgétaire signifie que les dépenses publiques dépassent les recettes. L'État doit emprunter pour financer la différence, ce qui augmente la dette publique."
             },
             {
                 id: 35,
@@ -954,7 +1009,8 @@
                     "Par une réduction des salaires publics",
                     "Par une augmentation des exportations"
                 ],
-                correct: 1
+                correct: 1,
+                explanation: "Un déficit budgétaire est généralement financé par l'emprunt. L'État émet des emprunts (bons du Trésor, obligations) pour obtenir les fonds manquants, ce qui augmente la dette publique."
             },
             {
                 id: 36,
@@ -966,7 +1022,8 @@
                     "Les déficits mensuels cumulés",
                     "Les charges de personnel de l'État"
                 ],
-                correct: 1
+                correct: 1,
+                explanation: "La dette publique est le total de tous les emprunts du gouvernement qui n'ont pas encore été remboursés. Elle comprend la dette interne (auprès des banques locales) et la dette externe (auprès des institutions internationales)."
             },
             {
                 id: 37,
@@ -978,7 +1035,8 @@
                     "Dette/PIB",
                     "Investissement/Épargne"
                 ],
-                correct: 2
+                correct: 2,
+                explanation: "Le ratio Dette/PIB mesure la charge de la dette par rapport à la taille de l'économie. Un ratio élevé (plus de 90%) indique une charge de dette élevée qui limite la capacité de l'État à investir."
             },
             {
                 id: 38,
@@ -990,7 +1048,8 @@
                     "L'établissement des impôts",
                     "La distribution des salaires"
                 ],
-                correct: 1
+                correct: 1,
+                explanation: "La politique monétaire est l'ensemble des actions de la Banque Centrale pour contrôler la quantité de monnaie en circulation, les taux d'intérêt et la stabilité des prix."
             },
             {
                 id: 39,
@@ -1002,7 +1061,8 @@
                     "Collecter les impôts",
                     "Construire les infrastructures"
                 ],
-                correct: 1
+                correct: 1,
+                explanation: "La Banque Centrale de Mauritanie (BCM) est responsable de la politique monétaire, de la stabilité des prix, de la supervision des banques commerciales et du maintien de la valeur de la monnaie nationale (l'Ouguiya)."
             },
 
             // DROIT ET ADMINISTRATION (12 questions)
@@ -1016,7 +1076,8 @@
                     "2006",
                     "2008"
                 ],
-                correct: 1
+                correct: 1,
+                explanation: "La Constitution actuelle de la Mauritanie a été adoptée en 1991. Elle a connu plusieurs modifications depuis, notamment en 2006 (abolition de la peine de mort), 2012 et 2017."
             },
             {
                 id: 41,
@@ -1028,7 +1089,8 @@
                     "Régime parlementaire pur",
                     "Régime socialiste"
                 ],
-                correct: 1
+                correct: 1,
+                explanation: "La Mauritanie est une République Islamique avec un régime présidentiel. Le Président est le chef de l'État et dispose du pouvoir exécutif. Le Parlement (Assemblée Nationale) exerce le pouvoir législatif."
             },
             {
                 id: 42,
@@ -1040,7 +1102,8 @@
                     "Le Président de la République",
                     "Le Gouverneur"
                 ],
-                correct: 2
+                correct: 2,
+                explanation: "Le Président de la République est le chef de l'État en Mauritanie. Il est élu pour un mandat de 5 ans et peut être réélu une seule fois (limité à deux mandats). Il dispose du pouvoir exécutif."
             },
             {
                 id: 43,
@@ -1052,7 +1115,8 @@
                     "163 députés",
                     "200 députés"
                 ],
-                correct: 2
+                correct: 2,
+                explanation: "L'Assemblée Nationale de Mauritanie compte 163 députés élus pour un mandat de 5 ans au suffrage universel. Elle exerce le pouvoir législatif et vote le budget de l'État."
             },
             {
                 id: 44,
@@ -1064,7 +1128,8 @@
                     "Les ministères uniquement",
                     "L'armée nationale"
                 ],
-                correct: 1
+                correct: 1,
+                explanation: "La fonction publique est l'ensemble des agents qui travaillent au service de l'État. Elle comprend les agents civils, les militaires et les agents des collectivités territoriales."
             },
             {
                 id: 45,
@@ -1076,7 +1141,8 @@
                     "Par concours",
                     "Par appel d'offres"
                 ],
-                correct: 2
+                correct: 2,
+                explanation: "Le recrutement dans la fonction publique se fait par concours. C'est le principal mécanisme pour assurer l'égalité des chances et la sélection des candidats les plus qualifiés."
             },
             {
                 id: 46,
@@ -1088,7 +1154,8 @@
                     "Contrat à durée déterminée",
                     "Accord informel"
                 ],
-                correct: 1
+                correct: 1,
+                explanation: "Le fonctionnaire public a un statut particulier réglementé par la loi (notamment le Statut Général du Fonctionnaire en Mauritanie). Ce statut offre des droits et des obligations spécifiques, différents d'un contrat de travail privé."
             },
             {
                 id: 47,
@@ -1100,7 +1167,8 @@
                     "De participer activement à la politique",
                     "De refuser les ordres contraires à sa conviction"
                 ],
-                correct: 1
+                correct: 1,
+                explanation: "Les fonctionnaires ont l'obligation d'obéir aux lois, aux règlements et aux ordres de leurs supérieurs hiérarchiques (dans le cadre de la légalité). Ils doivent également respecter la hiérarchie administrative."
             },
             {
                 id: 48,
@@ -1112,7 +1180,8 @@
                     "Pour tous les fonctionnaires",
                     "Seulement pour la police"
                 ],
-                correct: 2
+                correct: 2,
+                explanation: "Tous les fonctionnaires ont l'obligation du secret professionnel. Ils ne doivent pas divulguer les informations confidentielles ou classifiées dont ils ont connaissance dans l'exercice de leurs fonctions."
             },
             {
                 id: 49,
@@ -1124,7 +1193,8 @@
                     "Emprisonnement d'office",
                     "Confiscation des biens"
                 ],
-                correct: 1
+                correct: 1,
+                explanation: "Les sanctions disciplinaires possibles pour un fonctionnaire fautif sont progressives: avertissement (légère), blâme (modérée), suspension (lourde), révocation (très grave). Elles sont appliquées selon la gravité de la faute."
             },
             {
                 id: 50,
@@ -1136,7 +1206,8 @@
                     "Uniquement les ministres",
                     "Les citoyens envers l'État"
                 ],
-                correct: 1
+                correct: 1,
+                explanation: "L'État est responsable des actes de ses agents qui causent un préjudice. Les citoyens peuvent poursuivre l'État en dommages-intérêts devant les tribunaux administratifs en cas d'acte illégal ou fautif."
             },
             {
                 id: 51,
@@ -1148,7 +1219,8 @@
                     "Contrôler la régularité des opérations financières",
                     "Diriger les ministères"
                 ],
-                correct: 2
+                correct: 2,
+                explanation: "Un Contrôleur du Trésor est un fonctionnaire responsable du contrôle de la légalité et de la régularité des opérations financières de l'administration publique. Il veille au respect des règles budgétaires et comptables."
             },
 
             // MAURITANIE (11 questions)
@@ -1162,7 +1234,8 @@
                     "Nouadhibou",
                     "Kaédi"
                 ],
-                correct: 1
+                correct: 1,
+                explanation: "Nouakchott est la capitale de la Mauritanie depuis 1957. Fondée en tant que capitale administrative, elle est devenue le plus grand centre urbain du pays avec une population d'environ 1 million d'habitants."
             },
             {
                 id: 53,
@@ -1174,7 +1247,8 @@
                     "1966",
                     "1970"
                 ],
-                correct: 1
+                correct: 1,
+                explanation: "La Mauritanie a obtenu son indépendance le 28 novembre 1960 en se détachant du Soudan Français. Mokhtar Ould Daddah est devenu son premier président."
             },
             {
                 id: 54,
@@ -1186,7 +1260,8 @@
                     "Les mines et le pétrole",
                     "Le tourisme"
                 ],
-                correct: 2
+                correct: 2,
+                explanation: "Les mines (fer, cuivre, or) et le pétrole sont les principaux secteurs économiques de la Mauritanie. Ils génèrent les revenus majeurs et dominent les exportations du pays."
             },
             {
                 id: 55,
@@ -1198,7 +1273,8 @@
                     "Le charbon",
                     "L'uranium"
                 ],
-                correct: 1
+                correct: 1,
+                explanation: "Le minerai de fer est le principal minéral exploité en Mauritanie. Les gisements se trouvent principalement dans le nord du pays. La Mauritanie est l'un des plus grands producteurs de minerai de fer en Afrique."
             },
             {
                 id: 56,
@@ -1210,7 +1286,8 @@
                     "Le Sénégal",
                     "Le Niger"
                 ],
-                correct: 2
+                correct: 2,
+                explanation: "Le fleuve Sénégal constitue la frontière sud de la Mauritanie avec le Sénégal. C'est un fleuve important pour la région, utilisé pour l'irrigation agricole dans la vallée du Sénégal."
             },
             {
                 id: 57,
@@ -1222,7 +1299,8 @@
                     "Atar",
                     "Chinguetti"
                 ],
-                correct: 1
+                correct: 1,
+                explanation: "Nouadhibou est le second port important de Mauritanie (après Nouakchott). Situé sur la côte atlantique, il est le port principal pour l'exportation de poisson et de minerai de fer."
             },
             {
                 id: 58,
@@ -1234,7 +1312,8 @@
                     "12-13 régions (wilayas)",
                     "20 régions"
                 ],
-                correct: 2
+                correct: 2,
+                explanation: "La Mauritanie est divisée en 13 wilayas (régions) plus Nouakchott (capitale). Chaque wilaya est dirigée par un gouverneur nommé par le Président."
             },
             {
                 id: 59,
@@ -1246,7 +1325,8 @@
                     "Environ 80%+",
                     "Environ 20%"
                 ],
-                correct: 2
+                correct: 2,
+                explanation: "Plus de 80% du territoire mauritanien est couvert par le désert du Sahara. Seule la vallée du Sénégal au sud offre des conditions climatiques plus favorables pour l'agriculture."
             },
             {
                 id: 60,
@@ -1258,7 +1338,8 @@
                     "Le wolof",
                     "Le tamasheq"
                 ],
-                correct: 1
+                correct: 1,
+                explanation: "L'arabe est la langue officielle de la Mauritanie depuis 1991. On y parle également le hassania (dialecte arabe local), le pulaar, le soninke et le français (héritage colonial)."
             },
             {
                 id: 61,
@@ -1270,7 +1351,8 @@
                     "Des lacs intérieurs importants",
                     "De la tradition de pêche ancienne uniquement"
                 ],
-                correct: 1
+                correct: 1,
+                explanation: "Les eaux côtières de la Mauritanie sont parmi les plus riches au monde en poisson, grâce au courant froid des Canaries. La pêche est donc un secteur économique très important."
             },
             {
                 id: 62,
@@ -1282,23 +1364,20 @@
                     "La Banque Centrale de Mauritanie",
                     "Le Trésor public"
                 ],
-                correct: 2
+                correct: 2,
+                explanation: "La Banque Centrale de Mauritanie (BCM) est l'organisme responsable de la politique monétaire. Elle est autonome et répond directement au Président de la République."
             }
         ];
 
         // État global
         let currentQuestion = 0;
         let answers = new Array(62).fill(null);
-        let startTime = null;
-        let timerInterval = null;
-        let testSubmitted = false;
+        let answered = 0;
 
         // Lancer le test
         function startTest() {
             document.getElementById('startScreen').classList.add('hidden');
             document.getElementById('quizScreen').classList.remove('hidden');
-            startTime = Date.now();
-            startTimer();
             displayQuestion();
         }
 
@@ -1306,6 +1385,9 @@
         function displayQuestion() {
             const question = questions[currentQuestion];
             const container = document.getElementById('questionContainer');
+            
+            const isAnswered = answers[currentQuestion] !== null;
+            const selectedIndex = answers[currentQuestion];
             
             let html = `
                 <div class="question-container">
@@ -1318,37 +1400,77 @@
             `;
 
             question.options.forEach((option, index) => {
-                const checked = answers[currentQuestion] === index ? 'checked' : '';
-                const selectedClass = answers[currentQuestion] === index ? 'selected' : '';
+                let optionClass = '';
+                let disabled = '';
+                
+                if (isAnswered) {
+                    disabled = 'disabled';
+                    if (index === question.correct) {
+                        optionClass = 'correct answered';
+                    } else if (index === selectedIndex) {
+                        optionClass = 'incorrect answered';
+                    } else {
+                        optionClass = 'answered';
+                    }
+                } else if (index === selectedIndex) {
+                    optionClass = 'selected';
+                }
+
                 html += `
-                    <label class="option ${selectedClass}">
-                        <input type="radio" name="answer" value="${index}" ${checked} onchange="selectAnswer(${index})">
+                    <label class="option ${optionClass}" onclick="${!isAnswered ? `selectAnswer(${index})` : ''}">
+                        <input type="radio" name="answer" value="${index}" ${selectedIndex === index ? 'checked' : ''} ${disabled}>
                         <span class="option-label">${String.fromCharCode(65 + index)}) ${option}</span>
                     </label>
                 `;
             });
 
-            html += `</div></div>`;
+            html += `</div>`;
+
+            // Afficher le feedback si répondu
+            if (isAnswered) {
+                const isCorrect = selectedIndex === question.correct;
+                const feedbackClass = isCorrect ? 'correct' : 'incorrect';
+                
+                html += `
+                    <div class="feedback-box show ${feedbackClass}">
+                        <div class="feedback-title">
+                            ${isCorrect ? '✅ Correct!' : '❌ Incorrect'}
+                        </div>
+                        <div class="feedback-correct">
+                            <label>Réponse correcte:</label>
+                            <p>${question.options[question.correct]}</p>
+                        </div>
+                        <div style="background: white; padding: 15px; border-radius: 6px; margin-top: 15px;">
+                            <label style="font-weight: 600; color: #1F4788; display: block; margin-bottom: 8px;">📚 Explication:</label>
+                            <div class="feedback-explanation">${question.explanation}</div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            html += `</div>`;
             container.innerHTML = html;
 
             // Mettre à jour les boutons
             document.getElementById('prevBtn').style.display = currentQuestion > 0 ? 'block' : 'none';
-            document.getElementById('nextBtn').style.display = currentQuestion < 61 ? 'block' : 'none';
-            document.getElementById('submitBtn').style.display = currentQuestion === 61 ? 'block' : 'none';
+            document.getElementById('nextBtn').style.display = (currentQuestion < 61 && isAnswered) ? 'block' : 'none';
+            document.getElementById('finishBtn').style.display = currentQuestion === 61 && isAnswered ? 'block' : 'none';
 
             // Mettre à jour la barre de progression
             const progress = ((currentQuestion + 1) / 62) * 100;
             document.getElementById('progressFill').style.width = progress + '%';
 
             // Mettre à jour le score
-            const answered = answers.filter(a => a !== null).length;
-            document.getElementById('currentScore').textContent = answered;
+            const correctCount = answers.filter((ans, idx) => ans !== null && ans === questions[idx].correct).length;
+            document.getElementById('currentScore').textContent = correctCount;
         }
 
         // Sélectionner une réponse
         function selectAnswer(index) {
-            answers[currentQuestion] = index;
-            displayQuestion();
+            if (answers[currentQuestion] === null) {
+                answers[currentQuestion] = index;
+                displayQuestion();
+            }
         }
 
         // Question suivante
@@ -1369,16 +1491,8 @@
             }
         }
 
-        // Soumettre le test
-        function submitTest() {
-            if (answers.some(a => a === null)) {
-                if (!confirm('Vous n\'avez pas répondu à toutes les questions. Êtes-vous sûr?')) {
-                    return;
-                }
-            }
-
-            testSubmitted = true;
-            clearInterval(timerInterval);
+        // Terminer l'apprentissage
+        function finishLearning() {
             document.getElementById('quizScreen').classList.add('hidden');
             document.getElementById('resultsScreen').classList.remove('hidden');
             displayResults();
@@ -1411,16 +1525,16 @@
             let messageText = '';
             if (percentage >= 80) {
                 messageClass = 'excellent';
-                messageText = '🎉 Excellent! Vous êtes bien préparé(e) pour le concours!';
+                messageText = '🎉 Excellent! Vous êtes très bien préparé(e) pour le concours!';
             } else if (percentage >= 70) {
                 messageClass = 'good';
-                messageText = '✅ Bon score! Continuez vos révisions.';
+                messageText = '✅ Bon score! Continuez vos révisions pour consolider vos connaissances.';
             } else if (percentage >= 60) {
                 messageClass = 'average';
-                messageText = '⚠️ Score moyen. Intensifiez vos révisions.';
+                messageText = '⚠️ Score moyen. Intensifiez vos révisions, notamment dans vos points faibles.';
             } else {
                 messageClass = 'poor';
-                messageText = '📚 Vous devez approfondir vos connaissances.';
+                messageText = '📚 Vous devez approfondir vos connaissances. Révisez le guide PDF fourni.';
             }
 
             const messageEl = document.getElementById('resultMessage');
@@ -1428,7 +1542,7 @@
             messageEl.textContent = messageText;
 
             // Afficher les résultats par domaine
-            let domainHtml = '<h3 style="color: #1F4788; margin-bottom: 15px;">Résultats par domaine:</h3>';
+            let domainHtml = '<h3 style="color: #1F4788; margin-bottom: 15px;">📊 Résultats par domaine:</h3>';
             Object.keys(domainScores).sort().forEach(domain => {
                 const data = domainScores[domain];
                 const domainPercentage = Math.round((data.correct / data.total) * 100);
@@ -1442,97 +1556,14 @@
             document.getElementById('resultsByDomain').innerHTML = domainHtml;
         }
 
-        // Réviser les réponses
-        function reviewAnswers() {
-            document.getElementById('resultsScreen').classList.add('hidden');
-            document.getElementById('reviewScreen').classList.remove('hidden');
-            
-            let reviewHtml = '';
-            const domainGroups = {};
-
-            questions.forEach((question, index) => {
-                if (!domainGroups[question.domain]) {
-                    domainGroups[question.domain] = [];
-                }
-                domainGroups[question.domain].push({ question, index });
-            });
-
-            Object.keys(domainGroups).sort().forEach(domain => {
-                reviewHtml += `<h3 style="color: #1F4788; margin-top: 20px; margin-bottom: 10px;">${domain}</h3>`;
-                
-                domainGroups[domain].forEach(({ question, index }) => {
-                    const isCorrect = answers[index] === question.correct;
-                    const answerClass = isCorrect ? 'correct-answer' : 'wrong-answer';
-                    const answerStatus = isCorrect ? '✅ Correct' : '❌ Incorrect';
-                    
-                    reviewHtml += `
-                        <div class="summary-item ${answerClass}">
-                            <div class="summary-item-text">Question ${index + 1}: ${answerStatus}</div>
-                            <div class="summary-item-question">${question.text}</div>
-                            <div style="font-size: 13px; color: #666; margin-top: 8px;">
-                                <strong>Votre réponse:</strong> ${answers[index] !== null ? question.options[answers[index]] : 'Non répondu'}<br>
-                                <strong>Réponse correcte:</strong> ${question.options[question.correct]}
-                            </div>
-                        </div>
-                    `;
-                });
-            });
-
-            document.getElementById('reviewSummary').innerHTML = reviewHtml;
-        }
-
-        // Retour aux résultats
-        function goBackToResults() {
-            document.getElementById('reviewScreen').classList.add('hidden');
-            document.getElementById('resultsScreen').classList.remove('hidden');
-        }
-
         // Recommencer le test
         function restartTest() {
             currentQuestion = 0;
             answers = new Array(62).fill(null);
-            startTime = null;
-            testSubmitted = false;
             
             document.getElementById('startScreen').classList.remove('hidden');
             document.getElementById('quizScreen').classList.add('hidden');
             document.getElementById('resultsScreen').classList.add('hidden');
-            document.getElementById('reviewScreen').classList.add('hidden');
-            
-            clearInterval(timerInterval);
-        }
-
-        // Chronomètre
-        function startTimer() {
-            const duration = 90 * 60; // 90 minutes en secondes
-            let elapsed = 0;
-
-            timerInterval = setInterval(() => {
-                elapsed++;
-                const remaining = duration - elapsed;
-                
-                if (remaining <= 0) {
-                    clearInterval(timerInterval);
-                    submitTest();
-                    return;
-                }
-
-                const hours = Math.floor(remaining / 3600);
-                const minutes = Math.floor((remaining % 3600) / 60);
-                const seconds = remaining % 60;
-
-                const timerEl = document.getElementById('timer');
-                timerEl.textContent = 
-                    String(hours).padStart(2, '0') + ':' + 
-                    String(minutes).padStart(2, '0') + ':' + 
-                    String(seconds).padStart(2, '0');
-
-                if (remaining <= 5 * 60) { // Dernier 5 minutes
-                    timerEl.classList.add('warning');
-                } else {
-                    timerEl.classList.remove('warning');
-                }
-            }, 1000);
         }
     </script>
 </body>
